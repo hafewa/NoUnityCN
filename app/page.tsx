@@ -12,12 +12,13 @@ type VersionDictionary = Record<string, string[]>;
 export default function Page() {
   const [versions, setVersions] = useState<VersionDictionary>({});
   const [showAllVersions, setShowAllVersions] = useState(false);
-
+  const [selectedVersion, setSelectedVersion] = useState("all");
+  const [versionType, setVersionType] = useState("LTS");
 
   useEffect(() => {
     const fetchVersions = async () => {
       try {
-        const response = await fetch(`./versions.json`);
+        const response = await fetch(`./version/${versionType}.json`);
         if (!response.ok) {
           throw new Error(`请求失败，状态码：${response.status}`);
         }
@@ -36,12 +37,9 @@ export default function Page() {
       }
     };
     fetchVersions();
-  }, []);
+  }, [versionType]);
 
-
-  const [selectedVersion, setSelectedVersion] = useState("all");
-
-  function getLatestVersion(): string {
+  function getLatestVersion(type: string = "LTS"): string {
     // 获取所有年份并按数字降序排列
     const availableYears = Object.keys(versions)
         .map(Number)
@@ -58,6 +56,7 @@ export default function Page() {
       return "unityhub://6000.0.38f1/82314a941f2d";
     }
 
+    // 这里可以根据type筛选版本，目前只是返回第一个
     // @ts-ignore
     return yearVersions.sort((a, b) => {
       const aVer = a.split('/')[2].split('.')[1];
@@ -84,22 +83,48 @@ export default function Page() {
             <p className="text-lg text-gray-600">选择适合您的版本开始创作</p>
           </div>
 
+          {/* 版本类型切换 */}
+          <div className="flex justify-center space-x-4 mb-8">
+            {[
+              { id: "LTS", name: "长期支持" },
+              { id: "BETA", name: "测试版" },
+              { id: "ALPHA", name: "预览版" },
+              { id: "TECH", name: "技术预览" }
+            ].map((type) => (
+              <Button
+                key={type.id}
+                variant={versionType === type.id ? "default" : "outline"}
+                onClick={() => {
+                  setVersionType(type.id);
+                  setSelectedVersion("all"); // 切换版本类型时重置为所有版本
+                }}
+              >
+                {type.name}
+              </Button>
+            ))}
+          </div>
+
           {/* 下载卡片 */}
           <div className="grid md:grid-cols-2 gap-8 mb-12">
-            {/* 稳定版 */}
+            {/* 版本信息 */}
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-xl">最新版本</CardTitle>
-                <Badge>国际</Badge>
+                <CardTitle className="text-xl">
+                  {versionType === "LTS" && "长期支持版本"}
+                  {versionType === "BETA" && "测试版本"}
+                  {versionType === "ALPHA" && "预览版本"}
+                  {versionType === "TECH" && "技术预览版本"}
+                </CardTitle>
+                <Badge>{versionType}</Badge>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 mb-4">{getVersionName(getLatestVersion())}</p>
+                <p className="text-gray-600 mb-4">{getVersionName(getLatestVersion(versionType))}</p>
                 <div className="space-y-4">
-                  <Button className="w-full" size="lg" href={`./download?v=${getLatestVersion()}`}>
+                  <Button className="w-full" size="lg" href={`./download?v=${getLatestVersion(versionType)}`}>
                     <Download className="w-5 h-5 mr-2"/>
                     立刻下载
                   </Button>
-                    <Button variant="secondary" className="w-full" size="lg" href={`./component?v=${getLatestVersion()}`}>
+                    <Button variant="secondary" className="w-full" size="lg" href={`./component?v=${getLatestVersion(versionType)}`}>
                         <Box className="w-5 h-5 mr-2"/>
                         添加组件
                     </Button>
@@ -126,10 +151,13 @@ export default function Page() {
             </Card>
           </div>
 
-          {/* 历史版本下载 */}
+          {/* 所有版本下载 */}
           <Card className="mb-12">
             <CardHeader>
-              <CardTitle>历史版本下载</CardTitle>
+              <CardTitle>所有{versionType === "LTS" && "长期支持"}
+                {versionType === "BETA" && "测试"}
+                {versionType === "ALPHA" && "预览"}
+                {versionType === "TECH" && "技术预览"}版本 ({versionType})</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex space-x-4 mb-4 overflow-x-auto flex-nowrap pb-2">
@@ -163,7 +191,7 @@ export default function Page() {
                             <li key={url} className="flex gap-2">
                               <Button
                                   variant="secondary"
-                                  className="flex-grow" // 修改为 flex-grow 自动扩展
+                                  className="flex-grow"
                                   size="lg"
                                   href={`./download?v=${url}`}>
                                 <Download className="w-5 h-5 mr-2"/>
