@@ -137,7 +137,7 @@ export default function Page() {
           href={`./download?v=${url}`}
         >
           <Download className="w-5 h-5 mr-2"/>
-          {type ? `[${type}] ${getVersionName(url)}` : getVersionName(url)}下载
+          {type ? <><span className="font-bold">[{type}]</span> {getVersionName(url)} </> : getVersionName(url)}下载
         </Button>
         <Button
           className="flex-initial"
@@ -166,7 +166,7 @@ export default function Page() {
           <div className="flex justify-center space-x-4 mb-8">
             {[
               { id: "LTS", name: "长期支持" },
-              { id: "TECH", name: "技术预览" },
+              { id: "TECH", name: "技术支持" },
               { id: "BETA", name: "测试版" },
               { id: "ALPHA", name: "预览版" }
             ].map((type) => (
@@ -193,7 +193,7 @@ export default function Page() {
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-xl">
                   {versionType === "LTS" && "长期支持版本"}
-                  {versionType === "TECH" && "技术预览版本"}
+                  {versionType === "TECH" && "技术支持版本"}
                   {versionType === "BETA" && "测试版本"}
                   {versionType === "ALPHA" && "预览版本"}
                 </CardTitle>
@@ -240,7 +240,7 @@ export default function Page() {
                 {isSearching 
                   ? `全局搜索结果 "${searchQuery}"`
                   : `所有${versionType === "LTS" ? "长期支持" : 
-                         versionType === "TECH" ? "技术预览" : 
+                         versionType === "TECH" ? "技术支持" : 
                          versionType === "BETA" ? "测试" : 
                          versionType === "ALPHA" ? "预览" : ""}版本`
                 }
