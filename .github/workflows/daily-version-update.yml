@@ -1,17 +1,22 @@
-name: Unity 版本更新
+name: 每日版本更新
 
 on:
   schedule:
+    # 每天北京时间2点运行 (UTC时间18点，北京时间比UTC快8小时)
     - cron: '0 18 * * *'
   workflow_dispatch: # 允许手动触发
 
 jobs:
   update-versions:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # 明确声明需要写入权限
     
     steps:
       - name: 检出代码
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false # 避免使用GITHUB_TOKEN进行推送
       
       - name: 创建版本目录
         run: |
@@ -49,10 +54,16 @@ jobs:
           fi
           
           git add version/
-          git commit -m "更新$(date +'%Y-%m-%d') Unity版本数据"
-          
+          git commit -m "自动更新: $(date +'%Y-%m-%d') Unity版本数据"
+      
       - name: 推送更改
         uses: ad-m/github-push-action@master
         with:
+          # 使用PAT代替GITHUB_TOKEN, 需要在仓库设置中添加名为PAT的密钥
           github_token: ${{ secrets.PAT }}
-          branch: ${{ github.ref }} 
+          branch: main
+
+# 注意: 您需要在仓库的Settings > Secrets > Actions中添加名为PAT的密钥
+# 1. 访问 https://github.com/settings/tokens 生成新的个人访问令牌
+# 2. 勾选repo权限
+# 3. 将令牌添加到仓库的Secrets中，名称为PAT 
