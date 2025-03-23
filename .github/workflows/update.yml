@@ -1,0 +1,58 @@
+name: Unity 版本更新
+
+on:
+  schedule:
+    - cron: '0 18 * * *'
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  update-versions:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+      
+      - name: 创建版本目录
+        run: |
+          mkdir -p version
+      
+      - name: 下载版本文件
+        run: |
+          # 下载各种类型的版本文件
+          curl -L https://github.com/NoUnityCN/service/releases/download/releases/LTS.json -o version/LTS.json
+          curl -L https://github.com/NoUnityCN/service/releases/download/releases/TECH.json -o version/TECH.json
+          curl -L https://github.com/NoUnityCN/service/releases/download/releases/BETA.json -o version/BETA.json
+          curl -L https://github.com/NoUnityCN/service/releases/download/releases/ALPHA.json -o version/ALPHA.json
+          
+          # 显示下载内容摘要
+          echo "已下载的版本文件:"
+          ls -la version/
+          
+          # 显示文件内容概览
+          echo "LTS版本数量: $(grep -o "unityhub://" version/LTS.json | wc -l)"
+          echo "TECH版本数量: $(grep -o "unityhub://" version/TECH.json | wc -l)"
+          echo "BETA版本数量: $(grep -o "unityhub://" version/BETA.json | wc -l)"
+          echo "ALPHA版本数量: $(grep -o "unityhub://" version/ALPHA.json | wc -l)"
+      
+      - name: 配置Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+      
+      - name: 提交更改
+        run: |
+          # 检查是否有实际更改
+          if git diff --quiet version/; then
+            echo "没有检测到版本更新，跳过提交"
+            exit 0
+          fi
+          
+          git add version/
+          git commit -m "更新$(date +'%Y-%m-%d') Unity版本数据"
+          
+      - name: 推送更改
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }} 
