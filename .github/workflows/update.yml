@@ -15,25 +15,25 @@ jobs:
       
       - name: 创建版本目录
         run: |
-          mkdir -p version
+          mkdir -p public/version
       
       - name: 下载版本文件
         run: |
           # 下载各种类型的版本文件
-          curl -L https://github.com/NoUnityCN/service/releases/download/releases/LTS.json -o version/LTS.json
-          curl -L https://github.com/NoUnityCN/service/releases/download/releases/TECH.json -o version/TECH.json
-          curl -L https://github.com/NoUnityCN/service/releases/download/releases/BETA.json -o version/BETA.json
-          curl -L https://github.com/NoUnityCN/service/releases/download/releases/ALPHA.json -o version/ALPHA.json
+          curl -L https://github.com/NoUnityCN/service/releases/download/releases/LTS.json -o public/version/LTS.json
+          curl -L https://github.com/NoUnityCN/service/releases/download/releases/TECH.json -o public/version/TECH.json
+          curl -L https://github.com/NoUnityCN/service/releases/download/releases/BETA.json -o public/version/BETA.json
+          curl -L https://github.com/NoUnityCN/service/releases/download/releases/ALPHA.json -o public/version/ALPHA.json
           
           # 显示下载内容摘要
           echo "已下载的版本文件:"
-          ls -la version/
+          ls -la public/version/
           
           # 显示文件内容概览
-          echo "LTS版本数量: $(grep -o "unityhub://" version/LTS.json | wc -l)"
-          echo "TECH版本数量: $(grep -o "unityhub://" version/TECH.json | wc -l)"
-          echo "BETA版本数量: $(grep -o "unityhub://" version/BETA.json | wc -l)"
-          echo "ALPHA版本数量: $(grep -o "unityhub://" version/ALPHA.json | wc -l)"
+          echo "LTS版本数量: $(grep -o "unityhub://" public/version/LTS.json | wc -l)"
+          echo "TECH版本数量: $(grep -o "unityhub://" public/version/TECH.json | wc -l)"
+          echo "BETA版本数量: $(grep -o "unityhub://" public/version/BETA.json | wc -l)"
+          echo "ALPHA版本数量: $(grep -o "unityhub://" public/version/ALPHA.json | wc -l)"
       
       - name: 配置Git
         run: |
@@ -43,12 +43,12 @@ jobs:
       - name: 提交更改
         run: |
           # 检查是否有实际更改
-          if git diff --quiet version/; then
+          if git diff --quiet public/version/; then
             echo "没有检测到版本更新，跳过提交"
             exit 0
           fi
           
-          git add version/
+          git add public/version/
           git commit -m "更新$(date +'%Y-%m-%d') Unity版本数据"
           
       - name: 推送更改
