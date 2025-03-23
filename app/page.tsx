@@ -81,6 +81,27 @@ export default function Page() {
           }
         }
       }
+
+      // 对结果进行排序：按主版本号排序（点前面的数字）
+      results.sort((a, b) => {
+        const aVersion = a.url.split("://")[1].split("/")[0];
+        const bVersion = b.url.split("://")[1].split("/")[0];
+        
+        // 主版本号排序（点前面的数字），大的排在前面
+        const aMain = parseInt(aVersion.split(".")[0]);
+        const bMain = parseInt(bVersion.split(".")[0]);
+        if (aMain !== bMain) return bMain - aMain;
+        
+        // 主版本号相同时按类型排序
+        const typeIndexA = typeOrder.indexOf(a.type);
+        const typeIndexB = typeOrder.indexOf(b.type);
+        if (typeIndexA !== typeIndexB) return typeIndexA - typeIndexB;
+        
+        // 最后按子版本号排序
+        const aRev = aVersion.split(".")[1];
+        const bRev = bVersion.split(".")[1];
+        return bRev.localeCompare(aRev);
+      });
       
       setSearchResults(results);
     } else {
