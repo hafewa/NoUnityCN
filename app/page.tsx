@@ -7,6 +7,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { useEffect, useState } from 'react';
 import { Input } from "@/components/ui/input";
+import { Analytics } from "@vercel/analytics/react";
 
 type VersionDictionary = Record<string, string[]>;
 
