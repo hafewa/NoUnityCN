@@ -2,6 +2,7 @@ name: Deploy Website
 on:
   schedule:
     - cron: '0 19 * * *'
+  workflow_dispatch: # 允许手动触发
       
 permissions:
      contents: write
