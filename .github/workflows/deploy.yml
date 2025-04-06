@@ -1,8 +1,7 @@
 name: Deploy Website
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: '0 19 * * *'
       
 permissions:
      contents: write
