@@ -18,14 +18,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-      <html lang="zh-CN">
-      <head>
-          <link rel="shortcut icon" href="./favicon.ico"/>
-      </head>
-      <body className={cn(inter.className, "min-h-screen bg-gray-50")}>{children}</body>
-      </html>
+        <html lang="zh-CN">
+        <head>
+            <link rel="shortcut icon" href="./favicon.ico"/>
+        </head>
+        <body className={cn(inter.className, "min-h-screen bg-gray-50")}>{children}</body>
+        <Analytics/>
+        </html>
   )
 }
-
 
 import './globals.css'
