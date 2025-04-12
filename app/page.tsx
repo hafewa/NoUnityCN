@@ -195,7 +195,7 @@ export default function Page() {
                   setVersionType(type.id);
                   setSelectedVersion("all"); // 切换版本类型时重置为所有版本
                   if (searchQuery) {
-                    setSearchQuery(""); // 清除搜索
+                    setSearchQuery("");
                   }
                 }}
               >
@@ -343,7 +343,10 @@ export default function Page() {
                           className="w-full"
                           onClick={() => setShowAllVersions(true)}
                         >
-                          显示更多版本 ↓
+                          显示更多版本 ({Object.keys(versions)
+                            .flatMap(year => versions[year])
+                            .filter(url => !searchQuery || getVersionName(url).toLowerCase().includes(searchQuery.toLowerCase()))
+                            .length} 个) ↓
                         </Button>
                       </li>
                     )}
