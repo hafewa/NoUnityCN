@@ -9,6 +9,7 @@ const navigation = [
   { name: "文档", href: "/docs" },
   { name: "社区", href: "/community" },
   { name: "Unity Hub", href: "/unityhub" },
+  { name: "在GitHub上给我们star⭐", href: "https://github.com/NoUnityCN/NoUnityCN" },
 ]
 
 export function SiteHeader() {
