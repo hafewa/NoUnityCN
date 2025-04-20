@@ -12,9 +12,9 @@ NoUnityCN主站(nounitycn.top)目前并未实装数据分析插件，所有数�
 
 ### 搜索引擎SEO报告
 
-​	我们重视在搜索引擎上的优化，截止2025年4月6日，在必应搜索【NoUnityCN】的搜索排名为第一(www.nounitycn.top)，搜索【Unity国际版】的搜索排名为第五(www.nounitycn.top)。
+​	我们重视在搜索引擎上的优化，截止2025年4月6日，在必应搜索【NoUnityCN】的搜索排名为第一，搜索【Unity国际版】的搜索排名为第五。
 
-​	由于历史遗留问题，unity.dkdk.eu.org 域名目前会被重定向到 www.nounitycn.top，通过Bing Webmaster Tools发现，unity.dkdk.eu.org 的点击率和印象数为 www.nounitycn.top 的2 ～ 4倍，但 www.nounitycn.top 的平均点击率（11.45%）高于unity.dkdk.eu.org 的平均点击率（8.93%），且 www.nounitycn.top 的三组数据处于不断上升的趋势，以上数据均来自过去三个月内。
+​	由于历史遗留问题，unity.dkdk.eu.org 域名目前会被重定向到 www.nounitycn.top ，通过Bing Webmaster Tools发现，unity.dkdk.eu.org 的点击率和印象数为 www.nounitycn.top 的2 ～ 4倍，但 www.nounitycn.top 的平均点击率（11.45%）高于 unity.dkdk.eu.org 的平均点击率（8.93%），且 www.nounitycn.top 的三组数据处于不断上升的趋势，以上数据均来自过去三个月内。
 
 ### 用户行为报告
 
