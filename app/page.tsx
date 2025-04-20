@@ -7,11 +7,40 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { useEffect, useState } from 'react';
 import { Input } from "@/components/ui/input";
-import { Analytics } from "@vercel/analytics/react";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 type VersionDictionary = Record<string, string[]>;
 
 export default function Page() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    // 检查cookie是否存在
+    if (!getCookie('dismissPrompt')) {
+      setIsModalOpen(true);
+    }
+  }, []);
+
+  const getCookie = (name: string) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    return parts.length === 2
+      ? parts.pop()?.split(';').shift()
+      : null;
+  };
+
+  const setCookie = (name: string, value: string, days: number) => {
+    const expires = new Date(Date.now() + days * 864e5).toUTCString();
+    document.cookie = `${name}=${value}; expires=${expires}; path=/`;
+  };
+
+  const handleClose = () => setIsModalOpen(false);
+  const handleDismiss = () => {
+    setCookie('dismissPrompt', 'true', 365);
+    handleClose();
+  };
+
   const [versionsData, setVersionsData] = useState<Record<string, VersionDictionary>>({});
   const [showAllVersions, setShowAllVersions] = useState(false);
   const [selectedVersion, setSelectedVersion] = useState("all");
@@ -165,7 +194,36 @@ export default function Page() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SiteHeader />
+      {isModalOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white p-8 rounded shadow-lg max-w-md text-gray-700">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {`
+在访问之前，我们希望您能了解以下事项：
+
+NoUnityCN是一项大家一起实现的**开源**项目，我们旨在为有中文使用需求的**海外Unity开发者**提供Unity Editor版本检索服务，我们不会保留任何数据。
+
+“Unity”、Unity 徽标及其他 Unity 商标是 Unity Technologies 或其在美国和其他地区的分支机构的商标或注册商标。NoUnityCN不是Unity Technologies优美缔软件提供的一项服务。
+
+NoUnityCN**不是破解、修改、下载工具**，而只是一个方便检索Unity版本的开源项目，仅供学习交流使用。
+
+我们尊重任何内容的版权，我们不会提供任何盗版、破解版相关服务，如果我们的内容侵害到您的权益，请及时联系我们删除。
+
+我们面向的开发者群体是**在华办公的海外开发者或使用中文作为工作语言的海外开发者及需要运程协助工作的开发者**，而**不为大中华区（包含中国大陆及港澳台区域）本土开发者提供服务**，对于后者，我们更推荐使用[团结引擎（点击访问）](https://unity.cn/).
+`}
+              </ReactMarkdown>
+              <div className="flex gap-4 mt-6">
+                <Button className="w-full" size="lg" onClick={handleClose}>
+                   确认
+                </Button>
+                <Button variant="secondary" className="w-full" size="lg" onClick={handleDismiss}>
+                  不再显示
+                </Button>
+              </div>
+            </div>
+          </div>
+      )}
+      <SiteHeader/>
       <main className="flex-1">
         {isLoading && (
           <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-80 z-50">
@@ -251,7 +309,7 @@ export default function Page() {
           <Card className="mb-12">
             <CardHeader>
               <CardTitle>
-                {isSearching 
+                {isSearching
                   ? `全局搜索结果 "${searchQuery}"`
                   : `所有${versionType === "LTS" ? "长期支持" : 
                          versionType === "TECH" ? "技术支持" : 
@@ -271,7 +329,7 @@ export default function Page() {
                 />
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               </div>
-            
+
               {!isSearching && (
                 <div className="flex space-x-4 mb-4 overflow-x-auto flex-nowrap pb-2">
                   <Button
@@ -294,7 +352,7 @@ export default function Page() {
                     ))}
                 </div>
               )}
-              
+
               <ul className="space-y-4">
                 {isSearching ? (
                   <>
@@ -307,7 +365,7 @@ export default function Page() {
                         没有找到匹配的版本
                       </li>
                     )}
-                    
+
                     {!showAllVersions && searchResults.length > 10 && (
                       <li>
                         <Button
@@ -330,7 +388,7 @@ export default function Page() {
                         .slice(0, showAllVersions ? undefined : 5) // 控制显示数量
                         .map(url => renderVersionItem(url))
                       : filterVersions(versions[selectedVersion] || []).map(url => renderVersionItem(url))}
-                    
+
                     {!showAllVersions && selectedVersion === "all" && (
                       Object.keys(versions)
                         .flatMap(year => versions[year])
@@ -350,13 +408,13 @@ export default function Page() {
                         </Button>
                       </li>
                     )}
-                    
-                    {((selectedVersion === "all" && 
+
+                    {((selectedVersion === "all" &&
                       Object.keys(versions)
                         .flatMap(year => versions[year])
                         .filter(url => !searchQuery || getVersionName(url).toLowerCase().includes(searchQuery.toLowerCase()))
-                        .length === 0) || 
-                      (selectedVersion !== "all" && filterVersions(versions[selectedVersion] || []).length === 0)) && 
+                        .length === 0) ||
+                      (selectedVersion !== "all" && filterVersions(versions[selectedVersion] || []).length === 0)) &&
                       searchQuery && (
                         <li className="text-center text-gray-500 py-4">
                           没有找到匹配的版本
