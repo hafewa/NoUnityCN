@@ -46,6 +46,8 @@ NoUnityCN主站(nounitycn.top)目前并未实装数据分析插件，所有数�
 
 ​	目前，我们正在筹划对NoUnityCN api的开发，为日后我们的更多项目做准备。同时，我们将继续完善文档及其他功能。
 
+   自从建立以来到2025年4月，我们在Github上收获到了 245 个星标（stars）。
+
 ​	“Unity”、Unity 徽标及其他 Unity 商标是 Unity Technologies 或其在美国和其他地区的分支机构的商标或注册商标。NoUnityCN不是Unity Technologies优美缔软件提供的一项服务。
 
 ​	我们尊重内容的版权，我们不会提供任何盗版、破解版相关服务，如果我们的内容侵害到您的权益，请及时联系我们删除。
