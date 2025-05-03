@@ -134,6 +134,9 @@ export function Chat({ initialContent }: ChatProps) {
             <Send className="h-4 w-4" />
           </Button>
         </div>
+        <div className="fixed bottom-0 left-0 right-0 p-2 text-center text-xs text-gray-400 bg-sidebar">
+      内容为AI生成，仅供参考
+        </div>)
       </form>
     </div>
   );
