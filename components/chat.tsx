@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Send } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import ReactMarkdown from 'react-markdown';
 
 interface ChatProps {
   initialContent?: React.ReactNode;
@@ -104,13 +105,34 @@ export function Chat({ initialContent }: ChatProps) {
                 >
                   <div
                     className={cn(
-                      "max-w-[80%] rounded-lg p-4 bg-white border shadow-sm",
+                      "max-w-[90%] rounded-lg p-4 bg-white border shadow-sm",
                       message.role === 'user'
                         ? 'mr-2'
                         : 'ml-2'
                     )}
                   >
-                    {message.content}
+                    {message.role === 'assistant' ? (
+  <ReactMarkdown 
+    components={{
+      code({node, className, children, ...props}) {
+        return (
+          <code className={cn("bg-gray-100 p-1 rounded text-sm", className)} {...props}>
+            {children}
+          </code>
+        )
+      },
+      pre({node, className, children, ...props}) {
+        return (
+          <pre className={cn("bg-gray-100 p-4 rounded-md overflow-x-auto my-2", className)} {...props}>
+            {children}
+          </pre>
+        )
+      }
+    }}
+  >
+    {message.content}
+  </ReactMarkdown>
+) : message.content}
                   </div>
                 </div>
               ))}
@@ -121,7 +143,7 @@ export function Chat({ initialContent }: ChatProps) {
       </div>
 
       <form onSubmit={handleSubmit} className="p-4 border-t bg-white">
-        <div className="flex space-x-2">
+        <div className="flex space-x-2 mb-8">
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -134,9 +156,9 @@ export function Chat({ initialContent }: ChatProps) {
             <Send className="h-4 w-4" />
           </Button>
         </div>
-        <div className="fixed bottom-0 left-0 right-0 p-2 text-center text-xs text-gray-400 bg-sidebar">
+        <div className="fixed bottom-0 left-0 right-0 p-2 text-center text-xs text-gray-400 bg-transparent">
       内容为AI生成，仅供参考
-        </div>)
+        </div>
       </form>
     </div>
   );
