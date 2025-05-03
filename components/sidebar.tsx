@@ -423,6 +423,16 @@ function SidebarContent({ isOpen, onClose }: SidebarProps) {
             </Button>
           </>
         )}
+
+        <div className="pt-4">
+          <Button
+            variant="secondary"
+            className="w-full justify-center"
+            href={`./download?v=${currentVersion}`}
+          >
+            查看全部平台
+          </Button>
+        </div>
       </div>
     );
   };
