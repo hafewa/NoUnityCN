@@ -12,7 +12,7 @@ export async function POST(req: Request) {
 
   const systemMessage: Message = {
     role: 'system',
-    content: '你是NoUnityCN Copilot，一个Unity下载助手。你可以帮助用户下载Unity和相关组件。请用中文回答。'
+    content: ''
   };
 
   const stream = await OpenAIStream([systemMessage, ...messages]);
