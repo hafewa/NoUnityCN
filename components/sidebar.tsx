@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePathname, useSearchParams } from "next/navigation";
+import { Chat } from "@/components/chat";
 
 type VersionDictionary = Record<string, string[]>;
 
@@ -17,14 +18,6 @@ interface SidebarProps {
 type SystemType = "Windows" | "MacOS" | "Linux";
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
-  return (
-    <Suspense fallback={<div className="fixed top-0 right-0 z-50 h-full w-80 bg-white shadow-lg flex items-center justify-center">加载中...</div>}>
-      <SidebarContent isOpen={isOpen} onClose={onClose} />
-    </Suspense>
-  );
-}
-
-function SidebarContent({ isOpen, onClose }: SidebarProps) {
   const [versionsData, setVersionsData] = useState<Record<string, VersionDictionary>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [latestVersion, setLatestVersion] = useState<{type: string, url: string, year: number} | null>(null);
@@ -437,10 +430,78 @@ function SidebarContent({ isOpen, onClose }: SidebarProps) {
     );
   };
 
+  const renderContent = () => {
+    if (isLoading) {
+      return <div className="py-4 text-center text-gray-500">加载中...</div>;
+    }
+
+    if (isComponentPage) {
+      return renderVersionDownload();
+    }
+
+    if (isDownloadPage) {
+      return (
+        <div className="space-y-4">
+          {systemType === "Windows" && renderWindowsComponents()}
+          {systemType === "MacOS" && renderMacComponents()}
+          {systemType === "Linux" && renderLinuxComponents()}
+          
+          <div className="pt-4">
+            <Button
+              variant="secondary"
+              className="w-full justify-center"
+              href={`./component?v=${currentVersion}`}
+            >
+              查看全部组件
+            </Button>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-4">
+        {latestVersion && (
+          <>
+            <h3 className="font-medium text-sm text-gray-500">最新版本</h3>
+            <Button
+              variant="default"
+              className="w-full justify-start bg-gray-900 hover:bg-gray-800"
+              size="lg"
+              href={`./download?v=${latestVersion.url}`}
+            >
+              <Download className="w-5 h-5 mr-2" />
+              {getVersionName(latestVersion.url)}
+            </Button>
+          </>
+        )}
+        
+        {ltsVersions.length > 0 && (
+          <>
+            <h3 className="font-medium text-sm text-gray-500 pt-2">常用版本</h3>
+            <div className="space-y-2">
+              {ltsVersions.map((version, index) => (
+                <Button
+                  key={index}
+                  variant="outline"
+                  className="w-full justify-start"
+                  href={`./download?v=${version.url}`}
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  {getVersionName(version.url)}
+                </Button>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div
       className={cn(
-        "fixed top-0 right-0 z-50 h-full w-80 bg-white shadow-lg transform transition-transform duration-300 ease-in-out overflow-y-auto",
+        "fixed top-0 right-0 z-50 h-full w-80 bg-white shadow-lg transform transition-transform duration-300 ease-in-out",
         isOpen ? "translate-x-0" : "translate-x-full"
       )}
     >
@@ -453,64 +514,8 @@ function SidebarContent({ isOpen, onClose }: SidebarProps) {
             <X className="h-4 w-4" />
           </Button>
         </CardHeader>
-        <CardContent>
-          {isLoading ? (
-            <div className="py-4 text-center text-gray-500">加载中...</div>
-          ) : isComponentPage ? (
-            renderVersionDownload()
-          ) : isDownloadPage ? (
-            <div className="space-y-4">
-              {systemType === "Windows" && renderWindowsComponents()}
-              {systemType === "MacOS" && renderMacComponents()}
-              {systemType === "Linux" && renderLinuxComponents()}
-              
-              <div className="pt-4">
-                <Button
-                  variant="secondary"
-                  className="w-full justify-center"
-                  href={`./component?v=${currentVersion}`}
-                >
-                  查看全部组件
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {latestVersion && (
-                <>
-                  <h3 className="font-medium text-sm text-gray-500">最新版本</h3>
-                  <Button
-                    variant="default"
-                    className="w-full justify-start bg-gray-900 hover:bg-gray-800"
-                    size="lg"
-                    href={`./download?v=${latestVersion.url}`}
-                  >
-                    <Download className="w-5 h-5 mr-2" />
-                    {getVersionName(latestVersion.url)}
-                  </Button>
-                </>
-              )}
-              
-              {ltsVersions.length > 0 && (
-                <>
-                  <h3 className="font-medium text-sm text-gray-500 pt-2">常用版本</h3>
-                  <div className="space-y-2">
-                    {ltsVersions.map((version, index) => (
-                      <Button
-                        key={index}
-                        variant="outline"
-                        className="w-full justify-start"
-                        href={`./download?v=${version.url}`}
-                      >
-                        <Download className="w-4 h-4 mr-2" />
-                        {getVersionName(version.url)}
-                      </Button>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
-          )}
+        <CardContent className="h-[calc(100vh-4rem)] p-0">
+          <Chat initialContent={renderContent()} />
         </CardContent>
       </Card>
     </div>
