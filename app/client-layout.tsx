@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Sidebar } from "@/components/sidebar"
+import { SidebarWrapper } from "@/components/sidebar-wrapper"
 import { SidebarButton } from "@/components/sidebar-button"
 
 interface ClientLayoutProps {
@@ -19,7 +19,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
     <>
       {children}
       <SidebarButton onClick={toggleSidebar} />
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      <SidebarWrapper isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
     </>
   )
 } 

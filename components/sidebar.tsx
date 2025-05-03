@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download, X } from "lucide-react";
@@ -17,6 +17,14 @@ interface SidebarProps {
 type SystemType = "Windows" | "MacOS" | "Linux";
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
+  return (
+    <Suspense fallback={<div className="fixed top-0 right-0 z-50 h-full w-80 bg-white shadow-lg flex items-center justify-center">加载中...</div>}>
+      <SidebarContent isOpen={isOpen} onClose={onClose} />
+    </Suspense>
+  );
+}
+
+function SidebarContent({ isOpen, onClose }: SidebarProps) {
   const [versionsData, setVersionsData] = useState<Record<string, VersionDictionary>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [latestVersion, setLatestVersion] = useState<{type: string, url: string, year: number} | null>(null);
