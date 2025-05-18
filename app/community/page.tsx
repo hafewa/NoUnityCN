@@ -3,6 +3,7 @@ import { SiteFooter } from "@/components/site-footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { MessageCircle, Users} from "lucide-react"
+import {Badge} from "@/components/ui/badge";
 
 export default function CommunityPage() {
   return (
@@ -29,18 +30,42 @@ export default function CommunityPage() {
               </CardContent>
             </Card>
 
+            {/* 模板 带有标签的卡片 */}
+
+            {/*<Card>*/}
+            {/*  <CardHeader>*/}
+            {/*    <CardTitle className="flex justify-between">*/}
+            {/*      <div className="flex items-center gap-2">*/}
+            {/*        <MessageCircle className="h-6 w-6" />*/}
+            {/*        标题*/}
+            {/*      </div>*/}
+            {/*      <Badge>标签</Badge>*/}
+            {/*    </CardTitle>*/}
+            {/*  </CardHeader>*/}
+
+            {/*  <CardContent>*/}
+            {/*    <p className="text-gray-600 mb-4">简介</p>*/}
+            {/*    <Button className="w-full" href="https://unity.com/">访问</Button>*/}
+            {/*  </CardContent>*/}
+            {/*</Card>*/}
+
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MessageCircle className="h-6 w-6" />
-                  Unity Discussions
+                <CardTitle className="flex justify-between">
+                  <div className="flex items-center gap-2">
+                    <MessageCircle className="h-6 w-6" />
+                    Unity Discussions
+                  </div>
+                  <Badge>国际</Badge>
                 </CardTitle>
               </CardHeader>
+
               <CardContent>
                 <p className="text-gray-600 mb-4">访问Unity Discussions、和全球开发者讨论</p>
                 <Button className="w-full" href="https://discussions.unity.com/">访问</Button>
               </CardContent>
             </Card>
+
           </div>
         </div>
       </main>
