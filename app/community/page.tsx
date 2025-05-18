@@ -66,6 +66,57 @@ export default function CommunityPage() {
               </CardContent>
             </Card>
 
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex justify-between">
+                  <div className="flex items-center gap-2">
+                    <MessageCircle className="h-6 w-6" />
+                    团结引擎 开发者中心
+                  </div>
+                  <Badge>中国</Badge>
+                </CardTitle>
+              </CardHeader>
+
+              <CardContent>
+                <p className="text-gray-600 mb-4">访问团结引擎开发者中心</p>
+                <Button className="w-full" href="https://developer.unity.cn/">访问</Button>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex justify-between">
+                  <div className="flex items-center gap-2">
+                    <MessageCircle className="h-6 w-6" />
+                    Unity 学习中心
+                  </div>
+                  <Badge>国际</Badge>
+                </CardTitle>
+              </CardHeader>
+
+              <CardContent>
+                <p className="text-gray-600 mb-4">在线学习 Unity 游戏开发</p>
+                <Button className="w-full" href="https://learn.unity.com/">访问</Button>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex justify-between">
+                  <div className="flex items-center gap-2">
+                    <MessageCircle className="h-6 w-6" />
+                    团结引擎 中文课堂
+                  </div>
+                  <Badge>中国</Badge>
+                </CardTitle>
+              </CardHeader>
+
+              <CardContent>
+                <p className="text-gray-600 mb-4">在线学习 团结引擎 游戏开发</p>
+                <Button className="w-full" href="https://learn.u3d.cn/">访问</Button>
+              </CardContent>
+            </Card>
+
           </div>
         </div>
       </main>
