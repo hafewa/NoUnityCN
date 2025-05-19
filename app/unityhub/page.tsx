@@ -20,7 +20,7 @@ export default function UnityhubPage() {
           {/* 标题区域 */}
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">下载 Unity Hub</h2>
-            <p className="text-lg text-gray-600">在这里下载国际版的Unity Hub，管理您的Unity Editor以及项目</p>
+            <p className="text-lg text-gray-600">在这里下载Unity Hub，管理您的Unity Editor以及项目</p>
           </div>
 
           {/* 下载卡片 */}
@@ -41,9 +41,55 @@ export default function UnityhubPage() {
                     <Download className="w-5 h-5 mr-2"/>
                     Mac OS
                   </Button>
+                  {/* 此处临时使用 Arriles-TDT/GetUnityHub 仓库的源 */}
+                  <Button className="w-full" size="lg" href="https://github.com/Arriles-TDT/GetUnityHub/releases/download/unityhub/UnityHubSetupBeta-arm64.dmg">
+                    <Download className="w-5 h-5 mr-2"/>
+                    Mac OS (ARM64)
+                  </Button>
                 </div>
               </CardContent>
             </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-xl">Unity Hub 中国版</CardTitle>
+                <Badge>中国</Badge>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 mb-4"></p>
+                <div className="space-y-4">
+                  <Button className="w-full" size="lg" href="https://public-cdn.cloud.unitychina.cn/hub/prod/UnityHubSetup.exe">
+                    <Download className="w-5 h-5 mr-2"/>
+                    Windows
+                  </Button>
+                  <Button className="w-full" size="lg" href="https://public-cdn.cloud.unitychina.cn/hub/prod/UnityHubSetup.dmg">
+                    <Download className="w-5 h-5 mr-2"/>
+                    Mac OS
+                  </Button>
+                  <Button className="w-full" size="lg" href="https://public-cdn.cloud.unitychina.cn/hub/prod/UnityHubSetupBeta-arm64.dmg">
+                    <Download className="w-5 h-5 mr-2"/>
+                    Mac OS (ARM64)
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-xl">Unity Hub Linux版</CardTitle>
+                <Badge>全球</Badge>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 mb-4"></p>
+                <div className="space-y-4">
+                  <Button className="w-full" size="lg" href="https://docs.unity3d.com/hub/manual/InstallHub.html#install-hub-linux">
+                    <Share className="w-5 h-5 mr-2"/>
+                    Linux
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
           </div>
 
         </div>
