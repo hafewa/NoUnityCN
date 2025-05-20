@@ -34,7 +34,7 @@ export default function ComponentPage({searchParams,}: {
         let baseVersion = baseVersionMatch?.[1] ?? null;
 
         // 6000.2.0b1 -> 6000.2.0b1
-        if (baseVersionMatch?.[2] === "a" || baseVersionMatch?.[2] === "b") {
+        if (baseVersionMatch?.[2] === "a" || baseVersionMatch?.[2] === "b" || baseVersionMatch?.[2] === "p") {
             baseVersion = matches[1];
         }
 
