@@ -18,7 +18,8 @@ export default function ComponentPage({searchParams,}: {
 
     // 提取基础版本号
     // unityhub://6000.0.49f1/840e0a9776d9 -> 6000.0.49f1 -> 6000.0.49
-    function parseUnityHubUri(uri: string): { version: string; } | null {
+    // unityhub://6000.2.0b1/d17678da8412 -> 6000.2.0b1 -> 6000.2.0b1
+    function parseUnityHubUri(uri: string): { version: string | null } | null {
         // unityhub://6000.0.49f1/840e0a9776d9 -> 6000.0.49f1       matches[1]
         //                                     -> 840e0a9776d9      matches[2]
         const pattern = /^unityhub:\/\/([^\/]+)\/(.+)$/;
@@ -29,11 +30,16 @@ export default function ComponentPage({searchParams,}: {
         }
 
         // 6000.0.49f1 -> 6000.0.49
-        const baseVersionMatch = matches[1].match(/^(\d+\.\d+\.\d+)/);
-        const baseVersion = baseVersionMatch ? baseVersionMatch[0] : matches[1];
+        const baseVersionMatch = matches[1].match(/^(\d+\.\d+\.\d+)([a-z]*)\d*$/i);
+        let baseVersion = baseVersionMatch?.[1] ?? null;
+
+        // 6000.2.0b1 -> 6000.2.0b1
+        if (baseVersionMatch?.[2] === "a" || baseVersionMatch?.[2] === "b") {
+            baseVersion = matches[1];
+        }
 
         return {
-            version: baseVersion,  // 6000.0.49
+            version: baseVersion,
         };
     }
 
