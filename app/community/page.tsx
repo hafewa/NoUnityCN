@@ -38,7 +38,7 @@ export default function CommunityPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 mb-4">提出想要的功能、分享你的看法</p>
+                <p className="text-gray-600 mb-4">提出需要的功能、分享你的看法</p>
                 <Button className="w-full" href="https://github.com/NoUnityCN/NoUnityCN/discussions">访问</Button>
               </CardContent>
             </Card>
