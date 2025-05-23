@@ -187,7 +187,7 @@ export default function Page() {
             href={`./releaseNotes?v=${url}`}
         >
           <Share className="w-5 h-5 mr-2"/>
-          查看版本说明
+          查看发行说明
         </Button>
         <Button
             className="flex-initial"
