@@ -37,7 +37,7 @@ function parseUnityHubUri(uri: string) {
     return { version: matches[1] };
 }
 
-export default async function Page({ searchParams }: { searchParams: { v?: string | string[] } }) {
+export default async function releaseNotesPage({ searchParams }: { searchParams: { v?: string | string[] } }) {
     const versionParam = Array.isArray(searchParams.v) ? searchParams.v[0] : searchParams.v;
     const parsed = versionParam ? parseUnityHubUri(versionParam) : null;
 
