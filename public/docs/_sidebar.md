@@ -1,8 +1,8 @@
 * [](/ "NoUnityCN")
 
-* [NoUnityCN-2025年4月报告](./index.md)
+* [NoUnityCN-2025年4月报告](./index)
 
-* [关于 NoUnityCN](./about.md)
+* [关于 NoUnityCN](./about)
 
 ---
 
