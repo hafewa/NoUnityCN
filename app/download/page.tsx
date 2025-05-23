@@ -1,6 +1,6 @@
 import {SiteHeader} from "@/components/site-header"
 import {SiteFooter} from "@/components/site-footer"
-import {Download, Home} from "lucide-react";
+import {Download, Home, Share} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {CardContent} from "@/components/ui/card";
 
@@ -112,6 +112,16 @@ export default function DownloadPage({searchParams,}: {
                     <div className="prose prose-blue max-w-none">
                         <CardContent>
                             <div className="space-y-4">
+                                <Button variant="secondary" className="w-full" size="lg" href={`./releaseNotes?v=${version}`}>
+                                    <div className="flex items-center justify-between w-full">
+                                        <div className="flex items-center">
+                                            <Share className="w-5 h-5 mr-2"/>
+                                            发行说明
+                                        </div>
+                                        {/*<span className="text-xs text-gray-500"></span>*/}
+                                    </div>
+                                </Button>
+                                <hr/>
                                 <Button className="w-full" size="lg" href={`${version}`}>
                                     <div className="flex items-center justify-between w-full">
                                         <div className="flex items-center">

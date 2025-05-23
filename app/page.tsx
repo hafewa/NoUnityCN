@@ -36,7 +36,10 @@ export default function Page() {
   };
 
   const handleClose = () => setIsModalOpen(false);
-  const handleDismiss = () => {
+  const handleExit = () => {
+    window.location.replace("https://www.unity.com/");
+  }
+  const handleTrue = () => {
     setCookie('dismissPrompt', 'true', 365);
     handleClose();
   };
@@ -181,9 +184,18 @@ export default function Page() {
           {type ? <><span className="font-bold">[{type}]</span> {getVersionName(url)} </> : getVersionName(url)}下载
         </Button>
         <Button
-          className="flex-initial"
-          size="lg"
-          href={`./component?v=${url}`}
+            variant="secondary"
+            className="flex-initial"
+            size="lg"
+            href={`./releaseNotes?v=${url}`}
+        >
+          <Share className="w-5 h-5 mr-2"/>
+          查看发行说明
+        </Button>
+        <Button
+            className="flex-initial"
+            size="lg"
+            href={`./component?v=${url}`}
         >
           <Box className="w-5 h-5 mr-2"/>
           添加组件
@@ -213,11 +225,11 @@ NoUnityCN**不是破解、修改、下载工具**，而只是一个方便检索U
 `}
               </ReactMarkdown>
               <div className="flex gap-4 mt-6">
-                <Button className="w-full" size="lg" onClick={handleClose}>
+                <Button className="w-full" size="lg" onClick={handleTrue}>
                    确认
                 </Button>
-                <Button variant="secondary" className="w-full" size="lg" onClick={handleDismiss}>
-                  不再显示
+                <Button variant="secondary" className="w-full" size="lg" onClick={handleExit}>
+                   访问官网
                 </Button>
               </div>
             </div>
@@ -284,6 +296,10 @@ NoUnityCN**不是破解、修改、下载工具**，而只是一个方便检索U
                     <Box className="w-5 h-5 mr-2"/>
                     添加组件
                   </Button>
+                  {/*<Button variant="secondary" className="w-full" size="lg" href={`./releaseNotes?v=${getLatestVersion(versionType)}`}>*/}
+                  {/*  <Share className="w-5 h-5 mr-2"/>*/}
+                  {/*  查看发行说明*/}
+                  {/*</Button>*/}
                 </div>
               </CardContent>
             </Card>

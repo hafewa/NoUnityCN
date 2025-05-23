@@ -30,6 +30,19 @@ export default function CommunityPage() {
               </CardContent>
             </Card>
 
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <MessageCircle className="h-6 w-6" />
+                  NoUnityCN 讨论区
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 mb-4">提出需要的功能、分享你的看法</p>
+                <Button className="w-full" href="https://github.com/NoUnityCN/NoUnityCN/discussions">访问</Button>
+              </CardContent>
+            </Card>
+
             {/* 模板 带有标签的卡片 */}
 
             {/*<Card>*/}
