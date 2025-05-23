@@ -1,9 +1,9 @@
 "use server";
 
+import { SiteHeader } from "@/components/site-header"
+import { SiteFooter } from "@/components/site-footer"
 import fetch from 'node-fetch';
 import { micromark } from 'micromark';
-
-
 
 // 获取 Unity 版本发布信息
 async function fetchReleaseNotes(version: string) {
@@ -65,44 +65,67 @@ export default async function Page({ searchParams }: { searchParams: { v?: strin
 
         if (htmlContent) {
             return (
-                <div className="flex flex-col items-center justify-center min-h-screen py-4 px-4 text-center">
-                    {versionParam ? (<h1 className="text-4xl font-bold mb-4">Release Notes - {parsed.version}</h1>) : (<h1 className="text-4xl font-bold mb-4">Release Notes</h1>)}
-                    <div align="left" dangerouslySetInnerHTML={{ __html: htmlContent }} />
-                    <br/>
-                    <p className="text-sm text-gray-500 mt-8">
-                        <a href={fallbackUrl} target="_blank" rel="noopener noreferrer">{fallbackUrl}</a>
-                    </p>
+                <div className="min-h-screen flex flex-col">
+                    <SiteHeader />
+                    <div className="flex flex-col items-center justify-center min-h-screen py-4 px-4 text-center">
+                        {versionParam ? (<h1 className="text-4xl font-bold mb-4">Release Notes - {parsed.version}</h1>) : (<h1 className="text-4xl font-bold mb-4">Release Notes</h1>)}
+                        <hr/>
+                        <div align="left" dangerouslySetInnerHTML={{ __html: htmlContent }} />
+                        <br/>
+                        <hr/>
+                        <p className="text-sm text-gray-500 mt-8">
+                            <a href={fallbackUrl} target="_blank" rel="noopener noreferrer">{fallbackUrl}</a>
+                        </p>
+                    </div>
+                    <SiteFooter />
                 </div>
             );
         } else if (fallbackUrl) {
             return (
                 <div className="flex flex-col items-center justify-center min-h-screen py-4 px-4 text-center">
                     <h1 className="text-4xl font-bold mb-4">无法加载发布说明</h1>
-                    <p className="mb-4">服务器未能正确加载 Markdown 内容。</p>
+                    <p className="mb-4">服务器未能加载内容</p>
+                    <a
+                        href="https://github.com/NoUnityCN/NoUnityCN/issues/new"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        className="text-blue-600 underline"
+                    >
+                        通过 Github 向开发者反馈
+                    </a>
+
                     {/*<a*/}
                     {/*    href={fallbackUrl}*/}
                     {/*    target="_blank"*/}
                     {/*    rel="noopener noreferrer"*/}
                     {/*    className="text-blue-600 underline"*/}
                     {/*>*/}
-                    {/*    查看文件*/}
+                    {/*    单击尝试下载原始文件*/}
                     {/*</a>*/}
                 </div>
             );
         } else {
             return (
-                <div className="flex flex-col items-center justify-center min-h-screen py-4 px-4 text-center">
-                    <h1 className="text-4xl font-bold mb-4">无效的请求</h1>
-                    <p>未找到对应版本的发布说明。</p>
+                <div className="min-h-screen flex flex-col">
+                    <SiteHeader />
+                    <div className="flex flex-col items-center justify-center min-h-screen py-4 px-4 text-center">
+                        <h1 className="text-4xl font-bold mb-4">无效的请求</h1>
+                        <p>未找到对应版本的发布说明</p>
+                    </div>
+                    <SiteFooter />
                 </div>
             );
         }
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen py-4 px-4 text-center">
-            <h1 className="text-4xl font-bold mb-4">400 Bad Request</h1>
-            <p>你来到了一片没有知识的荒原。</p>
+        <div className="min-h-screen flex flex-col">
+            <SiteHeader />
+            <div className="flex flex-col items-center justify-center min-h-screen py-4 px-4 text-center">
+                <h1 className="text-4xl font-bold mb-4">400 Bad Request</h1>
+                <p>你来到了一片没有知识的荒原</p>
+            </div>
+            <SiteFooter />
         </div>
     );
 }
