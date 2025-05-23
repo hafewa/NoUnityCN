@@ -36,7 +36,10 @@ export default function Page() {
   };
 
   const handleClose = () => setIsModalOpen(false);
-  const handleDismiss = () => {
+  const handleExit = () => {
+    window.location.replace("https://www.unity.com/");
+  }
+  const handleTrue = () => {
     setCookie('dismissPrompt', 'true', 365);
     handleClose();
   };
@@ -222,11 +225,11 @@ NoUnityCN**不是破解、修改、下载工具**，而只是一个方便检索U
 `}
               </ReactMarkdown>
               <div className="flex gap-4 mt-6">
-                <Button className="w-full" size="lg" onClick={handleClose}>
+                <Button className="w-full" size="lg" onClick={handleTrue}>
                    确认
                 </Button>
-                <Button variant="secondary" className="w-full" size="lg" onClick={handleDismiss}>
-                  不再显示
+                <Button variant="secondary" className="w-full" size="lg" onClick={handleExit}>
+                   访问官网
                 </Button>
               </div>
             </div>
