@@ -92,3 +92,15 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.markdown-content {
+  /* 添加适当的样式 */
+  p {
+    margin-bottom: 1rem; /* 添加段落之间的间距 */
+  }
+  ul {
+    padding-left: 1rem; /* 添加列表项的缩进 */
+  }
+  /* 其他需要的样式 */
+}
+

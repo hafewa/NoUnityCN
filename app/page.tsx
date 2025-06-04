@@ -7,10 +7,43 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { useEffect, useState } from 'react';
 import { Input } from "@/components/ui/input";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 type VersionDictionary = Record<string, string[]>;
 
 export default function Page() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    // 检查cookie是否存在
+    if (!getCookie('dismissPrompt')) {
+      setIsModalOpen(true);
+    }
+  }, []);
+
+  const getCookie = (name: string) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    return parts.length === 2
+      ? parts.pop()?.split(';').shift()
+      : null;
+  };
+
+  const setCookie = (name: string, value: string, days: number) => {
+    const expires = new Date(Date.now() + days * 864e5).toUTCString();
+    document.cookie = `${name}=${value}; expires=${expires}; path=/`;
+  };
+
+  const handleClose = () => setIsModalOpen(false);
+  const handleExit = () => {
+    window.location.replace("https://www.unity.com/");
+  }
+  const handleTrue = () => {
+    setCookie('dismissPrompt', 'true', 365);
+    handleClose();
+  };
+
   const [versionsData, setVersionsData] = useState<Record<string, VersionDictionary>>({});
   const [showAllVersions, setShowAllVersions] = useState(false);
   const [selectedVersion, setSelectedVersion] = useState("all");
@@ -18,9 +51,11 @@ export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<Array<{type: string, url: string}>>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchAllVersions = async () => {
+      setIsLoading(true);
       try {
         const types = ["LTS", "TECH", "BETA", "ALPHA"];
         const allData: Record<string, VersionDictionary> = {};
@@ -31,8 +66,7 @@ export default function Page() {
             if (response.ok) {
               const contentType = response.headers.get('content-type');
               if (contentType?.includes('application/json')) {
-                const data = await response.json();
-                allData[type] = data;
+                allData[type] = await response.json();
               }
             }
           } catch (error) {
@@ -40,7 +74,6 @@ export default function Page() {
           }
         }
         
-        // 确保至少有一些数据
         if (Object.keys(allData).length === 0) {
           allData["LTS"] = { "6000": ["unityhub://6000.0.38f1/82314a941f2d"] };
         }
@@ -51,22 +84,21 @@ export default function Page() {
         setVersionsData({
           "LTS": { "6000": ["unityhub://6000.0.38f1/82314a941f2d"] }
         });
+      } finally {
+        setIsLoading(false);
       }
     };
     
     fetchAllVersions();
   }, []);
 
-  // 当前选中类型的版本数据
   const versions = versionsData[versionType] || {};
 
-  // 全局搜索处理
   useEffect(() => {
     if (searchQuery) {
       setIsSearching(true);
       const results: Array<{type: string, url: string}> = [];
       
-      // 搜索所有类型中的版本
       const typeOrder = ["LTS", "TECH", "BETA", "ALPHA"];
       
       for (const type of typeOrder) {
@@ -82,22 +114,18 @@ export default function Page() {
         }
       }
 
-      // 对结果进行排序：按主版本号排序（点前面的数字）
       results.sort((a, b) => {
         const aVersion = a.url.split("://")[1].split("/")[0];
         const bVersion = b.url.split("://")[1].split("/")[0];
         
-        // 主版本号排序（点前面的数字），大的排在前面
         const aMain = parseInt(aVersion.split(".")[0]);
         const bMain = parseInt(bVersion.split(".")[0]);
         if (aMain !== bMain) return bMain - aMain;
         
-        // 主版本号相同时按类型排序
         const typeIndexA = typeOrder.indexOf(a.type);
         const typeIndexB = typeOrder.indexOf(b.type);
         if (typeIndexA !== typeIndexB) return typeIndexA - typeIndexB;
         
-        // 最后按子版本号排序
         const aRev = aVersion.split(".")[1];
         const bRev = bVersion.split(".")[1];
         return bRev.localeCompare(aRev);
@@ -111,14 +139,12 @@ export default function Page() {
 
   function getLatestVersion(type: string = "LTS"): string {
     const typeVersions = versionsData[type] || {};
-    // 获取所有年份并按数字降序排列
     const availableYears = Object.keys(typeVersions)
         .map(Number)
         .sort((a, b) => b - a);
 
     if (availableYears.length === 0) return "unityhub://6000.0.38f1/82314a941f2d";
 
-    // 取最大年份的版本列表（将数字转回字符串key）
     const latestYear = availableYears[0].toString();
     const yearVersions = typeVersions[latestYear];
 
@@ -126,7 +152,6 @@ export default function Page() {
       return "unityhub://6000.0.38f1/82314a941f2d";
     }
 
-    // 根据版本号排序
     return yearVersions.sort((a, b) => {
       const aVer = a.split('/')[2].split('.')[1];
       const bVer = b.split('/')[2].split('.')[1];
@@ -139,7 +164,6 @@ export default function Page() {
     return `Unity ${version}`;
   }
 
-  // 过滤当前选中类型的版本列表
   const filterVersions = (versions: string[]) => {
     if (!searchQuery) return versions;
     return versions.filter(url => 
@@ -147,7 +171,6 @@ export default function Page() {
     );
   };
 
-  // 渲染版本项
   const renderVersionItem = (url: string, type?: string) => (
     <div className="overflow-x-auto" key={`${type || versionType}-${url}`}>
       <li className="flex gap-2">
@@ -161,9 +184,18 @@ export default function Page() {
           {type ? <><span className="font-bold">[{type}]</span> {getVersionName(url)} </> : getVersionName(url)}下载
         </Button>
         <Button
-          className="flex-initial"
-          size="lg"
-          href={`./component?v=${url}`}
+            variant="secondary"
+            className="flex-initial"
+            size="lg"
+            href={`./releaseNotes?v=${url}`}
+        >
+          <Share className="w-5 h-5 mr-2"/>
+          查看发行说明
+        </Button>
+        <Button
+            className="flex-initial"
+            size="lg"
+            href={`./component?v=${url}`}
         >
           <Box className="w-5 h-5 mr-2"/>
           添加组件
@@ -174,16 +206,51 @@ export default function Page() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SiteHeader />
+      {isModalOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white p-8 rounded shadow-lg max-w-md text-gray-700">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {`
+在访问之前，我们希望您能了解以下事项：
+
+NoUnityCN是一项大家一起实现的**开源**项目，我们旨在为有中文使用需求的**海外Unity开发者**提供Unity Editor版本检索服务，我们不会保留任何数据。
+
+“Unity”、Unity 徽标及其他 Unity 商标是 Unity Technologies 或其在美国和其他地区的分支机构的商标或注册商标。NoUnityCN不是Unity Technologies (优三缔科技有限公司) 提供的一项服务。
+
+NoUnityCN**不是破解、修改、下载工具**，而只是一个方便检索Unity版本的开源项目，仅供学习交流使用。
+
+我们尊重任何内容的版权，我们不会提供任何盗版、破解版相关服务，如果我们的内容侵害到您的权益，请及时联系我们删除。
+
+我们面向的开发者群体是**在华办公的海外开发者或使用中文作为工作语言的海外开发者及需要运程协助工作的开发者**，而**不为大中华区（包含中国大陆及港澳台区域）本土开发者提供服务**，对于后者，我们更推荐使用[团结引擎（点击访问）](https://unity.cn/).
+`}
+              </ReactMarkdown>
+              <div className="flex gap-4 mt-6">
+                <Button className="w-full" size="lg" onClick={handleTrue}>
+                   确认
+                </Button>
+                <Button variant="secondary" className="w-full" size="lg" onClick={handleExit}>
+                   访问官网
+                </Button>
+              </div>
+            </div>
+          </div>
+      )}
+      <SiteHeader/>
       <main className="flex-1">
+        {isLoading && (
+          <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-80 z-50">
+            <div className="text-center">
+              <div className="animate-spin inline-block w-8 h-8 border-[3px] border-current border-t-transparent rounded-full mb-2"></div>
+              <p className="text-lg text-gray-700">加载中...</p>
+            </div>
+          </div>
+        )}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          {/* 标题区域 */}
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">下载 Unity</h2>
             <p className="text-lg text-gray-600">选择适合您的版本开始创作</p>
           </div>
 
-          {/* 版本类型切换 */}
           <div className="flex justify-center space-x-4 mb-8">
             {[
               { id: "LTS", name: "长期支持" },
@@ -198,7 +265,7 @@ export default function Page() {
                   setVersionType(type.id);
                   setSelectedVersion("all"); // 切换版本类型时重置为所有版本
                   if (searchQuery) {
-                    setSearchQuery(""); // 清除搜索
+                    setSearchQuery("");
                   }
                 }}
               >
@@ -207,9 +274,7 @@ export default function Page() {
             ))}
           </div>
 
-          {/* 下载卡片 */}
           <div className="grid md:grid-cols-2 gap-8 mb-12">
-            {/* 版本信息 */}
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-xl">
@@ -231,11 +296,14 @@ export default function Page() {
                     <Box className="w-5 h-5 mr-2"/>
                     添加组件
                   </Button>
+                  {/*<Button variant="secondary" className="w-full" size="lg" href={`./releaseNotes?v=${getLatestVersion(versionType)}`}>*/}
+                  {/*  <Share className="w-5 h-5 mr-2"/>*/}
+                  {/*  查看发行说明*/}
+                  {/*</Button>*/}
                 </div>
               </CardContent>
             </Card>
 
-            {/* Hub */}
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-xl">团结引擎</CardTitle>
@@ -254,11 +322,10 @@ export default function Page() {
             </Card>
           </div>
 
-          {/* 所有版本下载 */}
           <Card className="mb-12">
             <CardHeader>
               <CardTitle>
-                {isSearching 
+                {isSearching
                   ? `全局搜索结果 "${searchQuery}"`
                   : `所有${versionType === "LTS" ? "长期支持" : 
                          versionType === "TECH" ? "技术支持" : 
@@ -268,7 +335,6 @@ export default function Page() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {/* 搜索框 */}
               <div className="relative mb-6">
                 <Input
                   type="text"
@@ -279,7 +345,7 @@ export default function Page() {
                 />
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               </div>
-            
+
               {!isSearching && (
                 <div className="flex space-x-4 mb-4 overflow-x-auto flex-nowrap pb-2">
                   <Button
@@ -302,10 +368,9 @@ export default function Page() {
                     ))}
                 </div>
               )}
-              
+
               <ul className="space-y-4">
                 {isSearching ? (
-                  // 全局搜索结果
                   <>
                     {searchResults.length > 0 ? (
                       searchResults
@@ -316,7 +381,7 @@ export default function Page() {
                         没有找到匹配的版本
                       </li>
                     )}
-                    
+
                     {!showAllVersions && searchResults.length > 10 && (
                       <li>
                         <Button
@@ -330,7 +395,6 @@ export default function Page() {
                     )}
                   </>
                 ) : (
-                  // 常规版本列表（按当前选中类型）
                   <>
                     {selectedVersion === "all"
                       ? Object.keys(versions)
@@ -340,8 +404,7 @@ export default function Page() {
                         .slice(0, showAllVersions ? undefined : 5) // 控制显示数量
                         .map(url => renderVersionItem(url))
                       : filterVersions(versions[selectedVersion] || []).map(url => renderVersionItem(url))}
-                    
-                    {/* 添加更多版本按钮 */}
+
                     {!showAllVersions && selectedVersion === "all" && (
                       Object.keys(versions)
                         .flatMap(year => versions[year])
@@ -354,18 +417,20 @@ export default function Page() {
                           className="w-full"
                           onClick={() => setShowAllVersions(true)}
                         >
-                          显示更多版本 ↓
+                          显示更多版本 ({Object.keys(versions)
+                            .flatMap(year => versions[year])
+                            .filter(url => !searchQuery || getVersionName(url).toLowerCase().includes(searchQuery.toLowerCase()))
+                            .length} 个) ↓
                         </Button>
                       </li>
                     )}
-                    
-                    {/* 没有匹配的版本时显示提示 */}
-                    {((selectedVersion === "all" && 
+
+                    {((selectedVersion === "all" &&
                       Object.keys(versions)
                         .flatMap(year => versions[year])
                         .filter(url => !searchQuery || getVersionName(url).toLowerCase().includes(searchQuery.toLowerCase()))
-                        .length === 0) || 
-                      (selectedVersion !== "all" && filterVersions(versions[selectedVersion] || []).length === 0)) && 
+                        .length === 0) ||
+                      (selectedVersion !== "all" && filterVersions(versions[selectedVersion] || []).length === 0)) &&
                       searchQuery && (
                         <li className="text-center text-gray-500 py-4">
                           没有找到匹配的版本

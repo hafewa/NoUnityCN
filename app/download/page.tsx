@@ -1,6 +1,6 @@
-import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
-import {Download, Home} from "lucide-react";
+import {SiteHeader} from "@/components/site-header"
+import {SiteFooter} from "@/components/site-footer"
+import {Download, Home, Share} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {CardContent} from "@/components/ui/card";
 
@@ -25,29 +25,75 @@ export default function DownloadPage({searchParams,}: {
         };
     }
 
-    function parseLinkwin(key:string) {
-        let downloadLink = `https://download.unity3d.com/download_unity/${parseUnityHubUri(key)?.fileId}/Windows64EditorInstaller/UnitySetup64-${parseUnityHubUri(key)?.version}.exe`;
-        //downloadLink = downloadLink.replace('unity3d.com', 'unitychina.cn')
-        return downloadLink;
+    function compareVersions(version: string, targetVersion: string): number {
+        // 首先尝试提取主要版本号
+        const mainPattern = /^(\d+)(?:\.(\d+))?(?:\.(\d+))?/;
+        const v1Match = version.match(mainPattern);
+        const v2Match = targetVersion.match(mainPattern);
+        
+        if (!v1Match || !v2Match) return 0;
+        
+        // 提取主要版本号，如果没有指定则默认为0
+        const v1 = [
+            parseInt(v1Match[1] || "0"), 
+            parseInt(v1Match[2] || "0"), 
+            parseInt(v1Match[3] || "0")
+        ];
+        const v2 = [
+            parseInt(v2Match[1] || "0"), 
+            parseInt(v2Match[2] || "0"), 
+            parseInt(v2Match[3] || "0")
+        ];
+        
+        // 比较主版本号
+        if (v1[0] !== v2[0]) return v1[0] - v2[0];
+        // 比较次版本号
+        if (v1[1] !== v2[1]) return v1[1] - v2[1];
+        // 比较修订版本号
+        return v1[2] - v2[2];
     }
 
-    function parseLinkmac(key:string) {
-        let downloadLink = `https://download.unity3d.com/download_unity/${parseUnityHubUri(key)?.fileId}/MacEditorInstaller/Unity-${parseUnityHubUri(key)?.version}.pkg`;
-        //downloadLink = downloadLink.replace('unity3d.com', 'unitychina.cn')
-        return downloadLink;
+    function isVersionSupported(parsedVersion: { version: string; fileId: string } | null, targetVersion: string): boolean {
+        if (!parsedVersion) return false;
+        return compareVersions(parsedVersion.version, targetVersion) >= 0;
     }
 
-    function parseLinkmacarm(key:string) {
-        let downloadLink = `https://download.unity3d.com/download_unity/${parseUnityHubUri(key)?.fileId}/MacEditorInstallerArm64/Unity-${parseUnityHubUri(key)?.version}.pkg`;
-        //downloadLink = downloadLink.replace('unity3d.com', 'unitychina.cn')
-        return downloadLink;
+    function parseLinkwin(key: string) {
+        return `https://download.unity3d.com/download_unity/${parseUnityHubUri(key)?.fileId}/Windows64EditorInstaller/UnitySetup64-${parseUnityHubUri(key)?.version}.exe`;
     }
 
-    function parseLinklinux(key:string) {
-        let downloadLink = `https://download.unity3d.com/download_unity/${parseUnityHubUri(key)?.fileId}/LinuxEditorInstaller/Unity-${parseUnityHubUri(key)?.version}.tar.xz`;
-        //downloadLink = downloadLink.replace('unity3d.com', 'unitychina.cn')
-        return downloadLink;
+    function parseLinkwin32(key: string) {
+        return `https://download.unity3d.com/download_unity/${parseUnityHubUri(key)?.fileId}/Windows32EditorInstaller/UnitySetup32-${parseUnityHubUri(key)?.version}.exe`;
     }
+
+    function parseLinkwinarm(key: string) {
+        return `https://download.unity3d.com/download_unity/${parseUnityHubUri(key)?.fileId}/WindowsArm64EditorInstaller/UnitySetupArm64-${parseUnityHubUri(key)?.version}.exe`;
+    }
+
+    function parseLinkmac(key: string) {
+        return `https://download.unity3d.com/download_unity/${parseUnityHubUri(key)?.fileId}/MacEditorInstaller/Unity-${parseUnityHubUri(key)?.version}.pkg`;
+    }
+
+    function parseLinkmacarm(key: string) {
+        return `https://download.unity3d.com/download_unity/${parseUnityHubUri(key)?.fileId}/MacEditorInstallerArm64/Unity-${parseUnityHubUri(key)?.version}.pkg`;
+    }
+
+    function parseLinklinux(key: string) {
+        return `https://download.unity3d.com/download_unity/${parseUnityHubUri(key)?.fileId}/LinuxEditortInstaller/Unity-${parseUnityHubUri(key)?.version}.tar.xz`;
+    }
+
+    // 检查当前版本是否支持特定平台
+    const parsedVersion = version ? parseUnityHubUri(version as string) : null;
+    const supportsWin64 = true; // 所有版本都支持
+    const supportsWin32 = parsedVersion ? 
+        (parsedVersion.version.startsWith("5.") || compareVersions(parsedVersion.version, "6.0.0") < 0) : false; // Unity 5.x
+    const supportsWinArm64 = parsedVersion ? 
+        compareVersions(parsedVersion.version, "6.0.0") >= 0 : false; // Unity 6.x或更高
+    const supportsMacIntel = true; // 所有版本都支持
+    const supportsMacArm = parsedVersion ? 
+        (compareVersions(parsedVersion.version, "2021.2.0") >= 0) : false; // 2021.2.0或更高
+    const supportsLinux = parsedVersion ? 
+        (compareVersions(parsedVersion.version, "2017.4.6") >= 0) : false; // 2017.4.6或更高
 
     return (
         <div className="min-h-screen flex flex-col">
@@ -66,30 +112,103 @@ export default function DownloadPage({searchParams,}: {
                     <div className="prose prose-blue max-w-none">
                         <CardContent>
                             <div className="space-y-4">
+                                <Button variant="secondary" className="w-full" size="lg" href={`./releaseNotes?v=${version}`}>
+                                    <div className="flex items-center justify-between w-full">
+                                        <div className="flex items-center">
+                                            <Share className="w-5 h-5 mr-2"/>
+                                            发行说明
+                                        </div>
+                                        {/*<span className="text-xs text-gray-500"></span>*/}
+                                    </div>
+                                </Button>
+                                <hr/>
                                 <Button className="w-full" size="lg" href={`${version}`}>
-                                    <Download className="w-5 h-5 mr-2"/>
-                                    使用Unity Hub下载
+                                    <div className="flex items-center justify-between w-full">
+                                        <div className="flex items-center">
+                                            <Download className="w-5 h-5 mr-2"/>
+                                            使用Unity Hub下载
+                                        </div>
+                                        <span className="text-xs text-gray-500">推荐方式</span>
+                                    </div>
                                 </Button>
-                                <Button variant="secondary" className="w-full" size="lg"
-                                        href={`${parseLinkwin(version)}`}>
-                                    <Download className="w-5 h-5 mr-2"/>
-                                    Windows(x86-64)下载
-                                </Button>
-                                <Button variant="secondary" className="w-full" size="lg"
-                                        href={`${parseLinkmac(version)}`}>
-                                    <Download className="w-5 h-5 mr-2"/>
-                                    MacOS(x86-64)下载
-                                </Button>
-                                <Button variant="secondary" className="w-full" size="lg"
-                                        href={`${parseLinkmacarm(version)}`}>
-                                    <Download className="w-5 h-5 mr-2"/>
-                                    MacOS(ARM64)下载
-                                </Button>
-                                <Button variant="secondary" className="w-full" size="lg"
-                                        href={`${parseLinklinux(version)}`}>
-                                    <Download className="w-5 h-5 mr-2"/>
-                                    Linux(x86-64)下载
-                                </Button>
+                                
+                                {supportsWin64 && (
+                                    <Button variant="secondary" className="w-full" size="lg"
+                                            href={`${parseLinkwin(version as string)}`}>
+                                        <div className="flex items-center justify-between w-full">
+                                            <div className="flex items-center">
+                                                <Download className="w-5 h-5 mr-2"/>
+                                                Windows(x86-64)下载
+                                            </div>
+                                            <span className="text-xs text-gray-500">支持所有版本</span>
+                                        </div>
+                                    </Button>
+                                )}
+                                
+                                {supportsWin32 && (
+                                    <Button variant="secondary" className="w-full" size="lg"
+                                            href={`${parseLinkwin32(version as string)}`}>
+                                        <div className="flex items-center justify-between w-full">
+                                            <div className="flex items-center">
+                                                <Download className="w-5 h-5 mr-2"/>
+                                                Windows(32 bit)下载
+                                            </div>
+                                            <span className="text-xs text-gray-500">仅支持Unity 5.x</span>
+                                        </div>
+                                    </Button>
+                                )}
+                                
+                                {supportsWinArm64 && (
+                                    <Button variant="secondary" className="w-full" size="lg"
+                                            href={`${parseLinkwinarm(version as string)}`}>
+                                        <div className="flex items-center justify-between w-full">
+                                            <div className="flex items-center">
+                                                <Download className="w-5 h-5 mr-2"/>
+                                                Windows(ARM64)下载
+                                            </div>
+                                            <span className="text-xs text-gray-500">仅支持Unity 6.x或更高</span>
+                                        </div>
+                                    </Button>
+                                )}
+                                
+                                {supportsMacIntel && (
+                                    <Button variant="secondary" className="w-full" size="lg"
+                                            href={`${parseLinkmac(version as string)}`}>
+                                        <div className="flex items-center justify-between w-full">
+                                            <div className="flex items-center">
+                                                <Download className="w-5 h-5 mr-2"/>
+                                                MacOS(Intel)下载
+                                            </div>
+                                            <span className="text-xs text-gray-500">支持所有版本</span>
+                                        </div>
+                                    </Button>
+                                )}
+                                
+                                {supportsMacArm && (
+                                    <Button variant="secondary" className="w-full" size="lg"
+                                            href={`${parseLinkmacarm(version as string)}`}>
+                                        <div className="flex items-center justify-between w-full">
+                                            <div className="flex items-center">
+                                                <Download className="w-5 h-5 mr-2"/>
+                                                MacOS(Apple Silicon)下载
+                                            </div>
+                                            <span className="text-xs text-gray-500">仅支持2021.2.0或更高</span>
+                                        </div>
+                                    </Button>
+                                )}
+                                
+                                {supportsLinux && (
+                                    <Button variant="secondary" className="w-full" size="lg"
+                                            href={`${parseLinklinux(version as string)}`}>
+                                        <div className="flex items-center justify-between w-full">
+                                            <div className="flex items-center">
+                                                <Download className="w-5 h-5 mr-2"/>
+                                                Linux(x86-64)下载
+                                            </div>
+                                            <span className="text-xs text-gray-500">仅支持2017.4.6或更高</span>
+                                        </div>
+                                    </Button>
+                                )}
                             </div>
                         </CardContent>
                     </div>

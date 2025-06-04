@@ -19,9 +19,9 @@ export default function ComponentPage({searchParams,}: {
     const LINUX_IL2CPP_BS = 'Linux-IL2CPP';
     const LINUX_MONO_BS = "Linux-Mono";
     const LINUX_SERVER_BS = "Linux-Server";
-    const MAC_IL2CPP_BS = "Mac-IL2CPP";
+    const MAC_MONO_BS = "Mac-Mono";
     const MAC_SERVER_BS = "Mac-Server";
-    const WINDOWS_MONO_BS = "Windows-Mono";
+    const WINDOWS_IL2CPP_BS = "Windows-IL2CPP";
     const WINDOWS_SERVER_BS = "Windows-Server";
     const UWP_BS = "Universal-Windows-Platform";
 
@@ -114,9 +114,9 @@ export default function ComponentPage({searchParams,}: {
                                             Linux Dedicated Server Build Support
                                         </Button>
                                         <Button variant="secondary" className="w-full" size="lg"
-                                                href={parseLinkwin(MAC_IL2CPP_BS, version)}>
+                                                href={parseLinkwin(MAC_MONO_BS, version)}>
                                             <Download className="w-5 h-5 mr-2"/>
-                                            Mac Build Support (IL2CPP)
+                                            Mac Build Support (Mono)
                                         </Button>
                                         <Button variant="secondary" className="w-full" size="lg"
                                                 href={parseLinkwin(MAC_SERVER_BS, version)}>
@@ -124,9 +124,9 @@ export default function ComponentPage({searchParams,}: {
                                             Mac Dedicated Server Build Support
                                         </Button>
                                         <Button variant="secondary" className="w-full" size="lg"
-                                                href={parseLinkwin(WINDOWS_MONO_BS, version)}>
+                                                href={parseLinkwin(WINDOWS_IL2CPP_BS, version)}>
                                             <Download className="w-5 h-5 mr-2"/>
-                                            Windows Build Support (Mono)
+                                            Windows Build Support (IL2CPP)
                                         </Button>
                                         <Button variant="secondary" className="w-full" size="lg"
                                                 href={parseLinkwin(WINDOWS_SERVER_BS, version)}>
@@ -187,9 +187,9 @@ export default function ComponentPage({searchParams,}: {
                                             Linux Dedicated Server Build Support
                                         </Button>
                                         <Button variant="secondary" className="w-full" size="lg"
-                                                href={parseLinkmac(MAC_IL2CPP_BS, version)}>
+                                                href={parseLinkmac(MAC_MONO_BS, version)}>
                                             <Download className="w-5 h-5 mr-2"/>
-                                            Mac Build Support (IL2CPP)
+                                            Mac Build Support (Mono)
                                         </Button>
                                         <Button variant="secondary" className="w-full" size="lg"
                                                 href={parseLinkmac(MAC_SERVER_BS, version)}>
@@ -197,9 +197,9 @@ export default function ComponentPage({searchParams,}: {
                                             Mac Dedicated Server Build Support
                                         </Button>
                                         <Button variant="secondary" className="w-full" size="lg"
-                                                href={parseLinkmac(WINDOWS_MONO_BS, version)}>
+                                                href={parseLinkmac(WINDOWS_IL2CPP_BS, version)}>
                                             <Download className="w-5 h-5 mr-2"/>
-                                            Windows Build Support (Mono)
+                                            Windows Build Support (IL2CPP)
                                         </Button>
                                         <Button variant="secondary" className="w-full" size="lg"
                                                 href={parseLinkmac(WINDOWS_SERVER_BS, version)}>
@@ -245,9 +245,9 @@ export default function ComponentPage({searchParams,}: {
                                             Linux Dedicated Server Build Support
                                         </Button>
                                         <Button variant="secondary" className="w-full" size="lg"
-                                                href={parseLinklinux(MAC_IL2CPP_BS, version)}>
+                                                href={parseLinklinux(MAC_MONO_BS, version)}>
                                             <Download className="w-5 h-5 mr-2"/>
-                                            Mac Build Support (IL2CPP)
+                                            Mac Build Support (Mono)
                                         </Button>
                                         <Button variant="secondary" className="w-full" size="lg"
                                                 href={parseLinklinux(MAC_SERVER_BS, version)}>
@@ -255,9 +255,9 @@ export default function ComponentPage({searchParams,}: {
                                             Mac Dedicated Server Build Support
                                         </Button>
                                         <Button variant="secondary" className="w-full" size="lg"
-                                                href={parseLinklinux(WINDOWS_MONO_BS, version)}>
+                                                href={parseLinklinux(WINDOWS_IL2CPP_BS, version)}>
                                             <Download className="w-5 h-5 mr-2"/>
-                                            Windows Build Support (Mono)
+                                            Windows Build Support (IL2CPP)
                                         </Button>
                                         <Button variant="secondary" className="w-full" size="lg"
                                                 href={parseLinklinux(WINDOWS_SERVER_BS, version)}>
