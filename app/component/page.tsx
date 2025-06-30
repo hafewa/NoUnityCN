@@ -39,6 +39,12 @@ export default function ComponentPage({searchParams,}: {
         };
     }
 
+    // Builtin Shaders
+    function parseLinkBS(key:string) {
+        let downloadLink = `https://download.unity3d.com/download_unity/${parseUnityHubUri(key)?.fileId}/builtin_shaders-${parseUnityHubUri(key)?.version}.zip`;
+        return downloadLink;
+    }
+
     function parseLinkwin(bs:string , key:string) {
         let downloadLink = `https://download.unity3d.com/download_unity/${parseUnityHubUri(key)?.fileId}/TargetSupportInstaller/UnitySetup-${bs}-Support-for-Editor-${parseUnityHubUri(key)?.version}.exe`;
         return downloadLink;
@@ -69,6 +75,24 @@ export default function ComponentPage({searchParams,}: {
                         </div>
                     </h1>
                     <div className="prose prose-blue max-w-none overflow-x-auto">
+                        <ul>
+                            <Card>
+                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                    <CardTitle className="text-xl">着色器</CardTitle>
+                                    <Badge>着色器</Badge>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="text-gray-600 mb-4">下载 Unity {parseUnityHubUri(version)?.version} 的 Builtin Shaders</p>
+                                    <div className="space-y-4">
+                                        <Button variant="secondary" className="w-full" size="lg"
+                                                href={parseLinkBS(version)}>
+                                            <Download className="w-5 h-5 mr-2"/>
+                                            Builtin Shaders
+                                        </Button>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </ul>
                         <ul>
                             <Card>
                                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
