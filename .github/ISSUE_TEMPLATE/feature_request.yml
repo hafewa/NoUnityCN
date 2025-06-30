@@ -1,0 +1,58 @@
+name: 功能请求
+description: 提出你希望添加的新功能或改进建议
+labels: ["enhancement", "待评估"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你提出功能建议！请尽量完整填写以下信息，帮助我们评估和实现你的需求。
+        ⚠️ 在提交前，请先通过 Issues 搜索，确认是否已有类似建议。
+
+  - type: input
+    id: title
+    attributes:
+      label: 功能名称
+      placeholder: 例如：支持深色模式
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 功能描述
+      description: |
+        请详细描述你希望实现的功能是什么，包括其用途和预期效果。
+      placeholder: |
+        我希望添加一个 xxx 功能，它可以帮助我...
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: 使用场景
+      description: |
+        请描述你在什么情况下需要这个功能。为什么现在的功能无法满足你的需求？
+      placeholder: |
+        在我使用...时，我发现需要...
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: 你认为这个功能的重要程度？
+      options:
+        -  非常重要（严重影响使用）
+        -  希望尽快支持（有影响但可以接受）
+        -  一般（属于改进体验）
+        -  可有可无 / 实验性质
+
+  - type: input
+    id: reference
+    attributes:
+      label: Unity 上有无参考链接或类似功能案例？
+      placeholder: https://...
+      description: |
+        如果有其他产品或网站已有类似功能，请提供链接以供参考（可选）。
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: 其他补充说明（可选）
+      placeholder: |
+        例如：是否愿意参与设计 / 开发 / 测试，或其他相关建议...
