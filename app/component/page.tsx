@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic';
 export default function ComponentPage({searchParams,}: {
     searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-    const version = searchParams?.v;
+    let version = searchParams?.v;
 
     const ANDROID_BS = "Android";
     const IOS_BS = "iOS";
@@ -37,6 +37,15 @@ export default function ComponentPage({searchParams,}: {
             version: matches[1],  // 6000.0.38f1
             fileId: matches[2]    // 82314a941f2d
         };
+    }
+
+    // Unity Documentation
+    function parseLinkDocumentation(key:string) {
+        const pattern = /(?<=unityhub:\/\/)(\d+\.\d+)/;
+        const matches = key.match(pattern);
+
+        let downloadLink = `https://cloudmedia-docs.unity3d.com/docscloudstorage/${matches?.[1]}/UnityDocumentation.zip`;
+        return downloadLink;
     }
 
     // Builtin Shaders
@@ -78,16 +87,21 @@ export default function ComponentPage({searchParams,}: {
                         <ul>
                             <Card>
                                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                    <CardTitle className="text-xl">着色器</CardTitle>
-                                    <Badge>着色器</Badge>
+                                    <CardTitle className="text-xl">其他内容</CardTitle>
+                                    <Badge>其他</Badge>
                                 </CardHeader>
                                 <CardContent>
-                                    <p className="text-gray-600 mb-4">下载 Unity {parseUnityHubUri(version)?.version} 的 Builtin Shaders</p>
+                                    <p className="text-gray-600 mb-4">下载 Unity {parseUnityHubUri(version)?.version} 的 其他内容</p>
                                     <div className="space-y-4">
+                                        <Button variant="secondary" className="w-full" size="lg"
+                                                href={parseLinkDocumentation(version)}>
+                                            <Download className="w-5 h-5 mr-2"/>
+                                            离线文档
+                                        </Button>
                                         <Button variant="secondary" className="w-full" size="lg"
                                                 href={parseLinkBS(version)}>
                                             <Download className="w-5 h-5 mr-2"/>
-                                            Builtin Shaders
+                                            Builtin Shaders (内置着色器)
                                         </Button>
                                     </div>
                                 </CardContent>
