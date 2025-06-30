@@ -1,6 +1,7 @@
 * [](/ "NoUnityCN")
 
-* [NoUnityCN-2025年4月报告](./index)
+* [关于近期对Unity6.1版本更新缓慢的分析](./index)
+* [NoUnityCN-2025年4月报告](./2504report)
 
 * [关于 NoUnityCN](./about)
 

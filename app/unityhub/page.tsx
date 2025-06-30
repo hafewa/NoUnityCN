@@ -41,8 +41,7 @@ export default function UnityhubPage() {
                     <Download className="w-5 h-5 mr-2"/>
                     Mac OS
                   </Button>
-                  {/* 此处临时使用 Arriles-TDT/GetUnityHub 仓库的源 */}
-                  <Button className="w-full" size="lg" href="https://github.com/Arriles-TDT/GetUnityHub/releases/download/unityhub/UnityHubSetupBeta-arm64.dmg">
+                  <Button className="w-full" size="lg" href="https://github.com/NoUnityCN/service/releases/download/unityhub/UnityHubSetupBeta-arm64.dmg">
                     <Download className="w-5 h-5 mr-2"/>
                     Mac OS (ARM64)
                   </Button>
