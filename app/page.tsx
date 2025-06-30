@@ -7,6 +7,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { useEffect, useState } from 'react';
 import { Input } from "@/components/ui/input";
+import {Inform} from "@/components/inform";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -236,6 +237,10 @@ NoUnityCN**不是破解、修改、下载工具**，而只是一个方便检索U
           </div>
       )}
       <SiteHeader/>
+
+      {/*公告组件*/}
+      <Inform filename="main" position="top-right" theme="gray" />
+
       <main className="flex-1">
         {isLoading && (
           <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-80 z-50">
