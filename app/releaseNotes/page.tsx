@@ -65,18 +65,39 @@ export default async function releaseNotesPage({ searchParams }: { searchParams:
 
         if (htmlContent) {
             return (
-                <div className="min-h-screen flex flex-col">
+                <div className="min-h-screen flex flex-col bg-gray-100">
                     <SiteHeader />
-                    <div className="flex flex-col items-center justify-center min-h-screen py-4 px-4 text-center">
-                        {versionParam ? (<h1 className="text-4xl font-bold mb-4">Release Notes - {parsed.version}</h1>) : (<h1 className="text-4xl font-bold mb-4">Release Notes</h1>)}
-                        <hr/>
-                        <div align="left" dangerouslySetInnerHTML={{ __html: htmlContent }} />
-                        <br/>
-                        <hr/>
-                        <p className="text-sm text-gray-500 mt-8">
-                            <a href={fallbackUrl} target="_blank" rel="noopener noreferrer">{fallbackUrl}</a>
-                        </p>
-                    </div>
+
+                    <main className="flex-grow flex items-center justify-center px-4 py-10">
+                        <div className="w-full max-w-10xl bg-white shadow-2xl rounded-3xl p-10 md:p-12 space-y-8">
+                            <div className="text-center space-y-2">
+                                <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800">
+                                    {versionParam ? `Release Notes - ${parsed.version}` : 'Release Notes'}
+                                </h1>
+                                <div className="w-40 h-1 bg-indigo-600 mx-auto rounded-full" />
+                            </div>
+
+                            <div
+                                className="prose prose-lg max-w-none text-gray-800 leading-relaxed"
+                                dangerouslySetInnerHTML={{ __html: htmlContent }}
+                            />
+
+                            <div className="pt-6 border-t border-gray-200 text-center">
+                                <p className="text-sm text-gray-500">
+                                    来源:
+                                    <a
+                                        href={fallbackUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-indigo-600 hover:underline ml-1"
+                                    >
+                                        {fallbackUrl}
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </main>
+
                     <SiteFooter />
                 </div>
             );
