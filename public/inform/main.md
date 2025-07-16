@@ -1,7 +1,17 @@
-# 关于近期对 Unity6.1 版本更新缓慢的分析
+## 重要公告：安装组件在特定版本间存在兼容性问题说明
 
-近期（2025年6月28日），我们查看了Issue[#15](https://github.com/NoUnityCN/NoUnityCN/issues/15)，发现NoUnityCN没有更新Unity 6000.1.0f1及其之后的“f1”后缀版本。
+近期根据 [Issue #17](https://github.com/NoUnityCN/NoUnityCN/issues/17) 反馈，在安装 **Mac OS** 的 **Windows Build Support 组件** 时出现 404 问题。
 
-查看api文档后，我们发现Unity在LTS、BETA、ALPHA、TECH之后更新了SUPPORTED类别，导致没有将这些版本提交到NoUnityCN的列表中。
+根据 Unity 官方的信息：
 
-目前，我们将SUPPORTED类别划分到“技术支持”版块中，你可以在nounitycn.top查看并下载Unity 6000.1.0f1及其之后的“f1”后缀版本了。
+> **原组件名**：`Windows Build Support (IL2CPP)`  
+> **已修正为**：`Windows Build Support (Mono)`
+
+请注意：
+
+- 部分早期版本的 Unity（如 **Unity 5 系列**）中存在 **无法正确获取该组件**。
+- 如果您在下载过程中遇到任何异常或组件缺失的问题，请前往下方链接填写 Bug 报告，我们将及时跟进修复：
+
+[前往反馈问题](https://github.com/NoUnityCN/NoUnityCN/issues/new?template=bug_report.yml)
+
+感谢您的支持与理解！
