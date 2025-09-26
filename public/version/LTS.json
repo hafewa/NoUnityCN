@@ -38,6 +38,7 @@
     "unityhub://6000.0.23f1/1c4764c07fb4"
   ],
   "2022": [
+    "unityhub://2022.3.67f1/f018f3b81016",
     "unityhub://2022.3.66f1/18347dd03c8f",
     "unityhub://2022.3.65f1/38ef61687f15",
     "unityhub://2022.3.64f1/a5c5c4ade6bd",
@@ -400,7 +401,6 @@
     "unityhub://5.1.0f2/0e70286e975e",
     "unityhub://5.1.0f1/82c0618b396f",
     "unityhub://5.0.2f1/0b02744d4013",
-    "unityhub://5.0.1f1/5a2e8fe35a68",
-    "unityhub://5.0.0f4/5b98b70ebeb9"
+    "unityhub://5.0.1f1/5a2e8fe35a68"
   ]
 }
