@@ -34,21 +34,17 @@ body:
       placeholder: 拖拽上传截图或粘贴错误信息...
 
   # -----------------------------------
-  #  新增：是否使用非中国（含港澳台）VPN
+  #  是否使用非中国（含港澳台）VPN
   # -----------------------------------
-  - type: radio
+  - type: dropdown
     id: vpn-location
     attributes:
       label: 是否使用非中国（含港澳台）VPN？
       description: |
         部分内容可能受地域限制。如果你正在使用位于中国大陆以外（包括港澳台）的 VPN，请选择 **是**，以帮助我们判断是否为地区访问限制导致的问题。关于 UnityHub 连接问题，请查看 #32。
       options:
-        - label: 是
-          value: yes
-        - label: 否
-          value: no
-        - label: 不确定
-          value: unknown
+        - 是
+        - 否
     validations:
       required: true
 
