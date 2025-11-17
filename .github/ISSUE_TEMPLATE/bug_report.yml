@@ -41,7 +41,7 @@ body:
     attributes:
       label: 是否使用非中国（含港澳台）VPN？
       description: |
-        部分内容可能受地域限制。如果你正在使用位于中国大陆以外（包括港澳台）的 VPN，请选择 **是**，以帮助我们判断是否为地区访问限制导致的问题。关于 UnityHub 连接问题，请查看 #32。
+        部分内容可能受地域限制。如果你正在使用位于中国（包括港澳台）以外的 VPN，请选择 **是**，以帮助我们判断是否为地区访问限制导致的问题。关于 UnityHub 连接问题，请查看 #32。
       options:
         - 是
         - 否
@@ -67,15 +67,17 @@ body:
   # -----------------------------------
   #  设备信息
   # -----------------------------------
-  - type: checkboxes
+  - type: dropdown
     id: device
     attributes:
       label: 访问设备类型
       options:
-        - label: 手机
-        - label: 平板
-        - label: 电脑
-        - label: 其他设备
+        - 手机
+        - 平板
+        - 电脑
+        - 其他设备
+    validations:
+      required: true
 
   - type: input
     id: os
