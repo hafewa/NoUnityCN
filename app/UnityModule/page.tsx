@@ -9,8 +9,6 @@ import { SiteFooter } from "@/components/site-footer"
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = false;
-export const fetchCache = 'force-no-store';
 
 // --- 枚举类型定义 ---
 
