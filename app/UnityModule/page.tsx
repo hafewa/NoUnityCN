@@ -3,13 +3,14 @@
 // 感谢 Larusso/unity-version-manager 开源项目
 'use client';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-
 import React, { useState, useCallback, useEffect } from 'react';
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = false;
+export const fetchCache = 'force-no-store';
 
 // --- 枚举类型定义 ---
 
