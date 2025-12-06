@@ -8,7 +8,6 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 
-export const dynamic = 'force-dynamic';
 
 // --- 枚举类型定义 ---
 
@@ -315,7 +314,7 @@ const fetch_modules_from_release = (
 };
 
 // --- React 组件 ---
-const UnityModuleFetcher: React.FC = () => {
+const UnityModuleFetcherInner: React.FC = () => {
     // --- 使用钩子获取 URL 参数和路由控制 ---
     const searchParams = useSearchParams(); // 获取查询参数对象
     const router = useRouter();             // 用于更新浏览器 URL
@@ -708,4 +707,13 @@ const UnityModuleFetcher: React.FC = () => {
     );
 };
 
-export default UnityModuleFetcher;
+// --- Suspense 包装组件 ---
+const UnityModuleFetcherWithSuspense: React.FC = () => {
+    return (
+        <React.Suspense fallback={<div>Loading...</div>}>
+            <UnityModuleFetcherInner />
+        </React.Suspense>
+    );
+};
+
+export default UnityModuleFetcherWithSuspense;
