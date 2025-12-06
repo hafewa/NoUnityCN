@@ -54,7 +54,7 @@
     "node-fetch": "^3.3.2",
     "react": "^19.2.1",
     "react-day-picker": "^9.5.1",
-    "react-dom": "^18",
+    "react-dom": "^19.1.2",
     "react-hook-form": "^7.54.1",
     "react-markdown": "^10.1.0",
     "react-resizable-panels": "^2.1.7",
