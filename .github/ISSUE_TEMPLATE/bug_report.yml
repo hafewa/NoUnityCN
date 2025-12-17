@@ -36,6 +36,8 @@ body:
       label: 问题页面 URL
       placeholder: https://example.com/...
       description: 请粘贴发生问题的网页地址。
+    validations:
+      required: true
 
   - type: textarea
     id: screenshot
@@ -43,6 +45,8 @@ body:
       label: 页面截图或报错信息
       description: 上传截图报错内容，帮助我们更快定位问题。
       placeholder: 拖拽上传截图或粘贴错误信息...
+    validations:
+      required: true
 
   # -----------------------------------
   #  是否使用非中国（含港澳台）VPN
@@ -75,6 +79,8 @@ body:
         - label: 内容缺失
         - label: 开启了 VPN 或代理
         - label: 使用了公司或校园网络
+    validations:
+      required: true
 
   # -----------------------------------
   #  设备信息
@@ -113,6 +119,8 @@ body:
       description: |
         请先浏览 Issues 里**有没有***相关 Issue! 这能帮你省下不少时间讲解问题。
       placeholder: 例如：#19
+    validations:
+      required: true
 
   # -----------------------------------
   #  其它补充信息
