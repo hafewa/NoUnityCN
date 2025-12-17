@@ -12,9 +12,20 @@ body:
   - type: markdown
     attributes:
       value: |
-        ## 🙏 感谢你的反馈！
-        请尽量详细填写以下信息，我们将尽快处理。  
-        ⚠️ 请先确认是否已有相同的 Issues，避免重复提交。
+        ## 感谢你的反馈！
+        在你准备要提出问题前，请先做到以下事情：
+        0.我们不是 Unity 官方人员。
+          我们只是一个开源项目，没有资金支持。网站作用只是提供界面。
+          里面内容都是来自（获取自） Unity 官方链接，我们目前没有存储任何内容。
+          如果你有困难我们可以帮你，但是我们并不是全职维护！
+        1.请先确认是否已有相同的 Issues！！！
+          请先确认是否已有相同的 Issues！！！
+          请先确认是否已有相同的 Issues！！！
+        2.阅读置顶的 Issue 
+        3.请先尝试排除自己问题。
+        4.网络问题，请参考 [#32](https://github.com/NoUnityCN/NoUnityCN/issues/32).
+        5.如果是非网站报错，请使用 Baidu、Bing、Google 解决。
+        x.如果实在是无法自行解决，请认真填写以下内容。你提供的越详细，我们越能帮到你。
 
   # -----------------------------------
   #  关键信息
@@ -30,7 +41,7 @@ body:
     id: screenshot
     attributes:
       label: 页面截图或报错信息
-      description: 推荐上传截图或粘贴控制台报错内容（如有）。
+      description: 上传截图报错内容，帮助我们更快定位问题。
       placeholder: 拖拽上传截图或粘贴错误信息...
 
   # -----------------------------------
@@ -56,9 +67,10 @@ body:
     attributes:
       label: 问题类型（可多选）
       options:
+        - label: 服务崩溃
         - label: 获取内容错误
         - label: 页面不显示
-        - label: 加载失败或加载缓慢
+        - label: 加载失败
         - label: 页面错位
         - label: 内容缺失
         - label: 开启了 VPN 或代理
@@ -98,6 +110,8 @@ body:
     id: related-issues
     attributes:
       label: 相关或相似的 Issues（如有）
+      description: |
+        请先浏览 Issues 里**有没有***相关 Issue! 这能帮你省下不少时间讲解问题。
       placeholder: 例如：#19
 
   # -----------------------------------
@@ -107,5 +121,5 @@ body:
     id: extra-info
     attributes:
       label: 其他补充信息
-      description: 包括网络环境、重现步骤、是否必现等。
+      description: 包括网络环境、重现步骤、是否能复现等。
       placeholder: 请填写任何你觉得有用的信息。
