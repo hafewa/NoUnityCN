@@ -44,6 +44,7 @@ export async function OpenAIStream(messages: Message[]) {
           const lines = chunk.split('\n');
 
           for (const line of lines) {
+            console.log('Received data block:', line); // 打印接收到的数据块
             if (line.trim() === '') continue;
             if (line.trim() === 'data: [DONE]') {
               controller.close();
@@ -52,13 +53,19 @@ export async function OpenAIStream(messages: Message[]) {
             if (!line.startsWith('data: ')) continue;
 
             try {
-              const json: StreamResponse = JSON.parse(line.slice(6));
+              const rawData = line.slice(6);
+              if (!rawData.startsWith('{') || !rawData.endsWith('}')) {
+                console.warn('Invalid JSON format:', rawData);
+                continue;
+              }
+
+              const json: StreamResponse = JSON.parse(rawData);
               const content = json.choices[0]?.delta?.content;
               if (content) {
                 controller.enqueue(encoder.encode(content));
               }
             } catch (e) {
-              console.error('Error parsing JSON:', e);
+              console.error('Error parsing JSON:', e, 'Raw data:', line.slice(6));
               continue;
             }
           }
@@ -70,4 +77,4 @@ export async function OpenAIStream(messages: Message[]) {
   });
 
   return stream;
-} 
+}
