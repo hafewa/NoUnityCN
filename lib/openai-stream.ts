@@ -32,8 +32,6 @@ export async function OpenAIStream(messages: Message[]) {
         return;
       }
 
-      let buffer = '';
-
       try {
         while (true) {
           const { done, value } = await reader.read();
@@ -54,18 +52,20 @@ export async function OpenAIStream(messages: Message[]) {
             }
             if (!line.startsWith('data: ')) continue;
 
-            buffer += line.slice(6); // 累积数据块
-
             try {
-              const json: StreamResponse = JSON.parse(buffer);
+              const rawData = line.slice(6);
+              if (!rawData.startsWith('{') || !rawData.endsWith('}')) {
+                console.warn('Invalid JSON format:', rawData);
+                continue;
+              }
+
+              const json: StreamResponse = JSON.parse(rawData);
               const content = json.choices[0]?.delta?.content;
               if (content) {
                 controller.enqueue(encoder.encode(content));
               }
-              buffer = ''; // 解析成功后清空缓冲区
             } catch (e) {
-              // 如果解析失败，可能是数据块不完整，继续累积
-              console.warn('Incomplete JSON, waiting for more data:', buffer);
+              console.error('Error parsing JSON:', e, 'Raw data:', line.slice(6));
               continue;
             }
           }
