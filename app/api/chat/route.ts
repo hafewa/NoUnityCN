@@ -5,6 +5,7 @@ if (!process.env.OPENAI_API_KEY) {
   throw new Error('Missing OPENAI_API_KEY environment variable');
 }
 
+export const dynamic = 'force-dynamic';
 export const runtime = 'edge'; // 强制使用边缘运行时
 
 export async function POST(req: Request) {
