@@ -1,49 +1,101 @@
+# --------------------------------------------------------------
+#   BUG 反馈模板
+# --------------------------------------------------------------
 name: BUG 反馈
 description: 请填写此表单报告你遇到的问题，帮助我们快速定位与修复。
 labels: ["bug", "待确认"]
+
 body:
+  # -----------------------------------
+  #  说明文字
+  # -----------------------------------
   - type: markdown
     attributes:
       value: |
-        感谢你的反馈！请尽量详细填写以下信息，我们将尽快处理。
-        ⚠️ 请先确认是否有重复 Issues，避免重复提交。
+        ## 感谢你的反馈！
+        在你准备要提出问题前，请先做到以下事情：
+        0.我们不是 Unity 官方人员。
+          我们只是一个开源项目，没有资金支持。网站作用只是提供界面。
+          里面内容都是来自（获取自） Unity 官方链接，我们目前没有存储任何内容。
+          如果你有困难我们可以帮你，但是我们并不是全职维护！
+        1.请先确认是否已有相同的 Issues！！！
+          请先确认是否已有相同的 Issues！！！
+          请先确认是否已有相同的 Issues！！！
+        2.阅读置顶的 Issue 
+        3.请先尝试排除自己问题。
+        4.网络问题，请参考 [#32](https://github.com/NoUnityCN/NoUnityCN/issues/32).
+        5.如果是非网站报错，请使用 Baidu、Bing、Google 解决。
+        x.如果实在是无法自行解决，请认真填写以下内容。你提供的越详细，我们越能帮到你。
 
+  # -----------------------------------
+  #  关键信息
+  # -----------------------------------
   - type: input
     id: url
     attributes:
       label: 问题页面 URL
       placeholder: https://example.com/...
       description: 请粘贴发生问题的网页地址。
+    validations:
+      required: true
 
   - type: textarea
     id: screenshot
     attributes:
       label: 页面截图或报错信息
-      description: 推荐上传截图或粘贴控制台报错内容（如有）。
+      description: 上传截图报错内容，帮助我们更快定位问题。
       placeholder: 拖拽上传截图或粘贴错误信息...
+    validations:
+      required: true
 
+  # -----------------------------------
+  #  是否使用非中国（含港澳台）VPN
+  # -----------------------------------
+  - type: dropdown
+    id: vpn-location
+    attributes:
+      label: 是否使用非中国（含港澳台）VPN？
+      description: |
+        部分内容可能受地域限制。如果你正在使用位于中国（包括港澳台）以外的 VPN，请选择 **是**，以帮助我们判断是否为地区访问限制导致的问题。关于 UnityHub 连接问题，请查看 #32。
+      options:
+        - 是
+        - 否
+    validations:
+      required: true
+
+  # -----------------------------------
+  #  问题类型
+  # -----------------------------------
   - type: checkboxes
     id: problem-types
     attributes:
       label: 问题类型（可多选）
       options:
+        - label: 服务崩溃
         - label: 获取内容错误
         - label: 页面不显示
-        - label: 加载失败或加载缓慢
+        - label: 加载失败
         - label: 页面错位
         - label: 内容缺失
         - label: 开启了 VPN 或代理
         - label: 使用了公司或校园网络
+    validations:
+      required: true
 
-  - type: checkboxes
+  # -----------------------------------
+  #  设备信息
+  # -----------------------------------
+  - type: dropdown
     id: device
     attributes:
       label: 访问设备类型
       options:
-        - label: 手机
-        - label: 平板
-        - label: 电脑
-        - label: 其他设备
+        - 手机
+        - 平板
+        - 电脑
+        - 其他设备
+    validations:
+      required: true
 
   - type: input
     id: os
@@ -57,15 +109,25 @@ body:
       label: 浏览器及版本
       placeholder: 例如：Chrome 125 / Edge 124
 
+  # -----------------------------------
+  #  关联 Issue
+  # -----------------------------------
   - type: input
     id: related-issues
     attributes:
       label: 相关或相似的 Issues（如有）
-      placeholder: 例如：#12, #33
+      description: |
+        请先浏览 Issues 里**有没有***相关 Issue! 这能帮你省下不少时间讲解问题。
+      placeholder: 例如：#19
+    validations:
+      required: true
 
+  # -----------------------------------
+  #  其它补充信息
+  # -----------------------------------
   - type: textarea
     id: extra-info
     attributes:
       label: 其他补充信息
-      description: 包括网络环境、重现步骤、是否必现等。
+      description: 包括网络环境、重现步骤、是否能复现等。
       placeholder: 请填写任何你觉得有用的信息。
